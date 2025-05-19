@@ -1,0 +1,129 @@
+# https://taskfile.dev
+
+version: '3'
+
+dotenv: ['.env']
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  default:
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+
+  ci:verify:
+    desc: Pipeline d'intégration complet
+    summary: |
+      Exécution des étapes d'intégration incluant la généreation des rapports API et l'exécution des tests d'intégration.
+    env:
+      NODE_OPTIONS: --max-old-space-size=8192
+    cmds:
+      - cmd: yarn install --immutable
+      - task: verify:dedupe
+      - task: verify:local-deps
+      - task: verify:peer-deps
+      - task: verify:repo-fix
+      - task: verify:config
+      - cmd: yarn tsc
+      - task: verify:codeformat
+      - task: verify:type-deps
+      - cmd: yarn build:api-reports:only
+      - cmd: yarn backstage-cli repo lint --since origin/main
+      - cmd: yarn backstage-cli repo test --coverage --maxWorkers=3
+
+  verify:config:
+    desc: Validate config
+    cmds:
+      - yarn backstage-cli config:check --lax
+
+  verify:dedupe:
+    desc: Verify and fix lockfile duplicates
+    summary: Verify deduplicated dependencies with overlapping ranges
+    cmds:
+      - node scripts/verify-lockfile-duplicates.js yarn.lock
+
+  verify:doc-links:
+    desc: Verify links in documentation
+    cmds:
+      - node scripts/verify-links.js
+
+  verify:peer-deps:
+    desc: Verify peer dependency ranges
+    cmds:
+      - yarn backstage-repo-tools peer-deps
+
+  verify:type-deps:
+    desc: Verify type dependencies
+    cmds:
+      - yarn backstage-repo-tools type-deps
+
+  verify:local-deps:
+    desc: Verify local dependency ranges
+    cmds:
+      - node scripts/verify-local-dependencies.js
+
+  verify:codeformat:
+    desc: Verify code formatting
+    cmds:
+      - yarn prettier --check .
+
+  verify:repo-fix:
+    desc: Check for missing repo fixes
+    cmds:
+      - yarn backstage-cli repo fix --check
+
+  bump:framework:
+    desc: Update Backstage related packages
+    summary: |
+      Updates dependencies related to the latest Backstage version.
+      Impacts both `app` and `backend` packages, along with internally developped plugins.
+      (see: https://backstage.io/docs/getting-started/keeping-backstage-updated)
+    cmds:
+      - yarn install
+      - yarn backstage-cli versions:bump
+      # - task: ci:verify
+      - git add .
+      - git commit -a -m "Bump Backstage framework $(yq -r .version backstage.json)"
+
+  bump:plugins:
+    desc: Update Community plugins
+    summary: |
+      Updates dependencies related to plugins maintained by the open source community.
+      Impacts both `app` and `backend` packages, and occasionnaly internally developped plugins.
+      (see: https://backstage.io/docs/getting-started/keeping-backstage-updated)
+    vars:
+      SCOPES:
+        - alithya-oss
+        - backstage-community
+        - opentelemetry
+        - roadiehq
+    dir: ./
+    cmds:
+      - yarn install --immutable
+      - yarn backstage-cli versions:bump --pattern '{{ .SCOPES | join "," | printf "@{%s}/*" }}'
+      # - task: ci:check
+      - git add .
+      - git commit -a -m "Bump community plugins and dependencies"
+
+  build:oci:
+    cmds:
+      - |
+        docker image build \
+        --tag oci.local/alithya/backstage:dev \
+        --file containers/backend/Dockerfile \
+        ./
+  run:
+    desc: Run Backstage application in development mode
+    cmds:
+      - yarn install --immutable \
+      - LOG_LEVEL=debug yarn start
+
+  generate:slo:
+    desc: Generate Prometheus rules for Backstage app
+    cmds:
+      - mkdir -p packages/backend/monitoring
+      - cp demo/monitoring/prometheus-base.yml packages/backend/monitoring/prometheus.yml
+      - sloth generate -i demo/monitoring/slo-spec.yml -o packages/backend/monitoring/backstage-rules.yml
+      - yq -i '.rule_files[0] = "backstage-rules.yml"' packages/backend/monitoring/prometheus.yml

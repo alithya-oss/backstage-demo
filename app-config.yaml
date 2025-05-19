@@ -50,6 +50,13 @@ proxy:
   #   '/test':
   #     target: 'https://example.com'
   #     changeOrigin: true
+  /prometheus/api:
+    # url to the api and path of your hosted prometheus instance
+    target: http://localhost:9090/api/v1/
+    changeOrigin: true
+    secure: false
+    headers:
+      Authorization: $YOUR_AUTH_TOKEN_IF_PROMETHEUS_IS_SECURED
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 # Note: After experimenting with basic setup, use CI/CD to generate docs
@@ -114,3 +121,8 @@ kubernetes:
 permission:
   # setting this to `false` will disable permissions
   enabled: true
+
+# Defaults to /prometheus/api and can be omitted if proxy is configured for that url
+prometheus:
+  proxyPath: /prometheus/api
+  uiUrl: http://localhost:9090

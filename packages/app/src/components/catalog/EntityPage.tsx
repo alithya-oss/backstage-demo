@@ -58,6 +58,13 @@ import {
   isKubernetesAvailable,
 } from '@backstage/plugin-kubernetes';
 
+import {
+  EntityPrometheusContent,
+  EntityPrometheusAlertCard,
+  EntityPrometheusGraphCard,
+  isPrometheusAvailable,
+} from '@roadiehq/backstage-plugin-prometheus';
+
 const techdocsContent = (
   <EntityTechdocsContent>
     <TechDocsAddons>
@@ -134,6 +141,17 @@ const overviewContent = (
       <EntityCatalogGraphCard variant="gridItem" height={400} />
     </Grid>
 
+    <EntitySwitch>
+      <EntitySwitch.Case if={isPrometheusAvailable}>
+        <Grid item md={8}>
+          <EntityPrometheusAlertCard />
+        </Grid>
+        <Grid item md={6}>
+          <EntityPrometheusGraphCard />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+
     <Grid item md={4} xs={12}>
       <EntityLinksCard />
     </Grid>
@@ -159,6 +177,14 @@ const serviceEntityPage = (
       if={isKubernetesAvailable}
     >
       <EntityKubernetesContent />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route
+      path="/prometheus"
+      title="Prometheus"
+      if={isPrometheusAvailable}
+    >
+      <EntityPrometheusContent />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/api" title="API">

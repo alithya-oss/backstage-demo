@@ -1,0 +1,56 @@
+services:
+  # postgres:
+  #   env_file: ./.env
+  #   build:
+  #     context: containers/pgvector
+  #   image: oci.local/postgresql/pgvector:dev
+  #   environment:
+  #     POSTGRES_USER: ${POSTGRES_USER:-backstage}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-backstage_user}
+  #     POSTGRES_POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:-postgres_admin}
+  #     POSTGRES_REPLICATION_PASSWORD: ${POSTGRES_REPLICATION_PASSWORD:-postgre_replication}
+  #     POSTGRES_DB: ${POSTGRES_DB:-postgres}
+  #   ports:
+  #     - 5432:5432
+  #   volumes:
+  #     - backstage-postgres:/var/lib/postgresql/data
+
+  # cache:
+  #   env_file: ./.env
+  #   image: docker.io/bitnami/valkey:latest
+  #   environment:
+  #     VALKEY_PASSWORD: ${REDIS_PASSWORD:-backstkage_valkey}
+  #   ports:
+  #     - '${REDIS_PORT:-6379}:6379'
+  #   volumes:
+  #     - backstage-redis:/data
+
+  # jaeger:
+  #   image: quay.io/jaegertracing/all-in-one:latest
+  #   restart: always
+  #   environment:
+  #     LOG_LEVEL: debug
+  #     COLLECTOR_OTLP_ENABLED: 'true'
+  #   ports:
+  #     - '${JARGER_WEBUI_PORT:-16686}:16686'
+  #     - '${OTLP_EXPORTER_PORT:-4317}:4317'
+  #     - '${OTLP_EXPORTER_GRPC_PORT:-4318}:4318'
+
+  prometheus:
+    image: docker.io/prom/prometheus:latest
+    restart: always
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    ports:
+      - '${PROMETHEUS_PORT:-9090}:9090'
+    volumes:
+      - ./packages/backend/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./packages/backend/monitoring/slo-rules.yml:/etc/prometheus/slo-rules.yml
+
+volumes:
+  # backstage-postgres:
+  #   driver: local
+  # backstage-redis:
+  #   driver: local
+  backstage-prometheus:
+    driver: local
