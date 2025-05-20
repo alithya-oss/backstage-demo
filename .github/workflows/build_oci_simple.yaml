@@ -1,15 +1,10 @@
 name: Build and push OCI image (simple)
 on:
-  push:
-    # branches:
-    #   - feature/**
-    #   - hostfix/**
-    tags:
-      - '[0-9]+.[0-9]+.[0-9]'
-      - '[0-9]+.[0-9]+.[0-9]+-rc*'
-      - '[0-9]+.[0-9]+.[0-9]+-beta*'
-      - '[0-9]+.[0-9]+.[0-9]+-alpha*'
-      - '[0-9]+.[0-9]+.[0-9]+-hotfix*'
+  workflow_dispatch:
+
+  repository_dispatch:
+    types: [release-published]
+
 jobs:
   build:
     runs-on: ubuntu-latest
