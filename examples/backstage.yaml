@@ -24,6 +24,8 @@ spec:
   type: service
   owner: guests
   lifecycle: experimental
+  providesApis:
+    - internal_backstage_openapi_doc
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component

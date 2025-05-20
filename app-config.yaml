@@ -107,6 +107,17 @@ catalog:
       rules:
         - allow: [System, Component]
 
+  providers:
+    # see: https://github.com/backstage/backstage/tree/master/plugins/catalog-backend-module-backstage-openapi
+    backstageOpenapi:
+      plugins:
+        - catalog
+        - events
+        - search
+      entityOverrides:
+        spec:
+          owner: guests
+          system: developer-portal
 
     ## Uncomment these lines to add more example data
     # - type: url
