@@ -55,8 +55,9 @@ proxy:
     target: http://localhost:9090/api/v1/
     changeOrigin: true
     secure: false
-    headers:
-      Authorization: $YOUR_AUTH_TOKEN_IF_PROMETHEUS_IS_SECURED
+    credentials: dangerously-allow-unauthenticated
+    # headers:
+    #   Authorization: $YOUR_AUTH_TOKEN_IF_PROMETHEUS_IS_SECURED
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 # Note: After experimenting with basic setup, use CI/CD to generate docs
@@ -100,6 +101,12 @@ catalog:
       target: ../../examples/org.yaml
       rules:
         - allow: [User, Group]
+
+    - type: file
+      target: ../../examples/backstage.yaml
+      rules:
+        - allow: [System, Component]
+
 
     ## Uncomment these lines to add more example data
     # - type: url

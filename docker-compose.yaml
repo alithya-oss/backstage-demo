@@ -45,7 +45,7 @@ services:
       - '${PROMETHEUS_PORT:-9090}:9090'
     volumes:
       - ./packages/backend/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./packages/backend/monitoring/slo-rules.yml:/etc/prometheus/slo-rules.yml
+      - ./packages/backend/monitoring/backstage-rules.yml:/etc/prometheus/backstage-rules.yml
 
 volumes:
   # backstage-postgres:

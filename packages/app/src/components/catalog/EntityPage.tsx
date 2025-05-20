@@ -143,10 +143,10 @@ const overviewContent = (
 
     <EntitySwitch>
       <EntitySwitch.Case if={isPrometheusAvailable}>
-        <Grid item md={8}>
+        <Grid item md={8} xs={10}>
           <EntityPrometheusAlertCard />
         </Grid>
-        <Grid item md={6}>
+        <Grid item md={4} xs={10} >
           <EntityPrometheusGraphCard />
         </Grid>
       </EntitySwitch.Case>

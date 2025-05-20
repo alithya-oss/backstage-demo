@@ -1,0 +1,31 @@
+# WARNING: this API version is currently not supported by the sloth generator
+apiVersion: openslo/v1
+kind: SLO
+metadata:
+  name: sloth-slo-backstage
+  displayName: Backstage Developer Portal Requests Availability
+spec:
+  description: "Common SLO based on availability for HTTP request responses."
+  service: backstage
+  indicator:
+    metadata:
+      name: backstage-error
+      displayName: Backstage Error
+    spec:
+      ratioMetric:
+        counter: true
+        good:
+          metricSource:
+            type: Prometheus
+            query: sum(rate(http_server_duration_count{job="backstage",http_status_code!~"(5..|429)"}[{{.window}}]))
+        total:
+          metricSource:
+            type: Prometheus
+            query: sum(rate(http_server_duration_count{job="backstage"}[{{.window}}]))
+  timeWindow:
+    - duration: 30d
+      isRolling: true
+  budgetingMethod: Occurrences
+  objectives:
+    - displayName: Backstage Total Errors
+      target: 0.999

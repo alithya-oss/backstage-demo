@@ -6,10 +6,10 @@
 apiVersion: openslo/v1alpha
 kind: SLO
 metadata:
-  name: sloth-slo-my-service
+  name: sloth-slo-backstage
   displayName: Requests Availability
 spec:
-  service: my-service
+  service: backstage
   description: "Common SLO based on availability for HTTP request responses."
   budgetingMethod: Occurrences
   objectives:
@@ -17,11 +17,11 @@ spec:
         good:
           source: prometheus
           queryType: promql
-          query: sum(rate(http_request_duration_seconds_count{job="myservice",code!~"(5..|429)"}[{{.window}}]))
+          query: sum(rate(http_server_duration_count{job="backstage",http_status_code!~"(5..|429)"}[{{.window}}]))
         total:
           source: prometheus
           queryType: promql
-          query: sum(rate(http_request_duration_seconds_count{job="myservice"}[{{.window}}]))
+          query: sum(rate(http_server_duration_count{job="backstage"}[{{.window}}]))
       target: 0.999
   timeWindows:
     - count: 30

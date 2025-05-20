@@ -117,13 +117,38 @@ tasks:
   run:
     desc: Run Backstage application in development mode
     cmds:
-      - yarn install --immutable \
+      - yarn install --immutable
       - LOG_LEVEL=debug yarn start
+
+  run:load-test:
+    desc: Run load test
+    cmds:
+      - yarn install --immutable
+      - >
+        yarn artillery run
+        --env-file .env
+        load-test.yml
 
   generate:slo:
     desc: Generate Prometheus rules for Backstage app
     cmds:
       - mkdir -p packages/backend/monitoring
-      - cp demo/monitoring/prometheus-base.yml packages/backend/monitoring/prometheus.yml
-      - sloth generate -i demo/monitoring/slo-spec.yml -o packages/backend/monitoring/backstage-rules.yml
-      - yq -i '.rule_files[0] = "backstage-rules.yml"' packages/backend/monitoring/prometheus.yml
+      - >
+        curl -fsSL
+        -o 'packages/backend/monitoring/prometheus.yml'
+        https://raw.githubusercontent.com/backstage/backstage/refs/heads/master/packages/backend/prometheus.yml
+      - >
+        yq eval --inplace '
+        .scrape_configs[0].job_name = "backstage" |
+        .scrape_configs[1].job_name = "prometheus" |
+        .scrape_configs[1].static_configs[0].targets[0] = "localhost:9090"
+        ' packages/backend/monitoring/prometheus.yml
+      # - oslo validate -f demo/monitoring/slo-spec.v1alpha.yml
+      - >
+        sloth generate
+        -i demo/monitoring/sloth-spec.v1.yml
+        -o packages/backend/monitoring/backstage-rules.yml
+      - promtool check rules packages/backend/monitoring/backstage-rules.yml
+      - >
+        yq -i '.rule_files[0] = "backstage-rules.yml"
+        ' packages/backend/monitoring/prometheus.yml
