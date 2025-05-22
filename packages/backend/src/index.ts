@@ -62,4 +62,7 @@ backend.add(import('@backstage-community/plugin-tech-insights-backend'));
 backend.add(import('@backstage-community/plugin-tech-insights-backend-module-jsonfc'));
 backend.add(import('@alithya-oss/backstage-plugin-tech-insights-backend-module-catalog-entities'));
 
+// infrawallet
+backend.add(import('@electrolux-oss/plugin-infrawallet-backend'))
+
 backend.start();

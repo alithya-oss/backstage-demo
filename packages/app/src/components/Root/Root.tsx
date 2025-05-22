@@ -28,6 +28,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import { MyGroupsSidebarItem } from '@backstage/plugin-org';
 import GroupIcon from '@material-ui/icons/People';
 
+import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
+import { InfraWalletIcon } from '@electrolux-oss/plugin-infrawallet';
+
 const useSidebarLogoStyles = makeStyles({
   root: {
     width: sidebarConfig.drawerWidthClosed,
@@ -79,6 +82,8 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         <SidebarDivider />
         <SidebarScrollWrapper>
           {/* Items in this group will be scrollable if they run out of space */}
+          <SidebarItem icon={EmojiObjectsIcon} to="maturity" text="Maturity" />
+          <SidebarItem icon={InfraWalletIcon} to="infrawallet" text="InfraWallet" />
         </SidebarScrollWrapper>
       </SidebarGroup>
       <SidebarSpace />

@@ -71,6 +71,11 @@ import {
   EntityMaturitySummaryContent,
 } from '@backstage-community/plugin-tech-insights-maturity';
 
+import {
+  EntityInfraWalletCard,
+  isInfraWalletAvailable,
+} from '@electrolux-oss/plugin-infrawallet';
+
 const techdocsContent = (
   <EntityTechdocsContent>
     <TechDocsAddons>
@@ -158,7 +163,15 @@ const overviewContent = (
       </EntitySwitch.Case>
     </EntitySwitch>
 
-    <Grid item md={12} xs={6}>
+    <EntitySwitch>
+      <EntitySwitch.Case if={isInfraWalletAvailable}>
+        <Grid item md={6}>
+          <EntityInfraWalletCard />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+
+    <Grid item md={6} xs={6}>
       <EntityMaturitySummaryCard />
     </Grid>
 

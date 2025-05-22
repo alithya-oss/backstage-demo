@@ -152,3 +152,78 @@ tasks:
       - >
         yq -i '.rule_files[0] = "backstage-rules.yml"
         ' packages/backend/monitoring/prometheus.yml
+
+  install:k3s:
+    desc: Install K3s with Argo projects
+    cmds:
+      - curl -sfL https://get.k3s.io | sh -
+
+  install:crds:
+    desc: Install required
+    vars:
+      PROMETHEUS_CRDS_VERSION: 2.0.0
+    cmds:
+      - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+      - helm repo update
+      - |
+        helm upgrade --install \
+        --version "{{.PROMETHEUS_CRDS_VERSION}}" \
+        prometheus-operator-crds prometheus-community/prometheus-operator-crds
+
+  install:argo-cd:
+    desc: Install ArgoCD
+    vars:
+      ARGO_CD_VERSION: latest
+    env:
+      ADMIN_PWD: admin
+    cmds:
+      - mkdir -p .bin/
+      - |
+        curl -fsSL -o .bin/argocd \
+        https://github.com/argoproj/argo-cd/releases/{{.ARGO_CD_VERSION}}/download/argocd-linux-amd64
+      - chmod +x .bin/argocd
+      - helm repo add argo https://argoproj.github.io/argo-helm
+      - helm repo update
+      - |
+        ADMIN_BCRYPT=$(.bin/argocd account bcrypt --password $ADMIN_PWD) \
+        helm upgrade --install \
+        --wait \
+        --namespace argo-cd \
+        --create-namespace \
+        --set configs.secret.argocdServerAdminPassword="${ADMIN_BCRYPT}" \
+        --set server.extraArgs[0]="--insecure" \
+        --set server.service.type="LoadBalancer" \
+        --set server.service.servicePortHttp="32080" \
+        --set controller.metrics.enabled="true" \
+        --set controller.metrics.serviceMonitor.enabled="true" \
+        --set dex.enabled="true" \
+        --set dex.metrics.enabled="true" \
+        --set dex.metrics.serviceMonitor.enabled="true" \
+        --set redis.metrics.enabled="true" \
+        --set redis.metrics.serviceMonitor.enabled="true" \
+        --set server.metrics.enabled="true" \
+        --set server.metrics.serviceMonitor.enabled="true" \
+        --set repoServer.metrics.enabled="true" \
+        --set repoServer.metrics.serviceMonitor.enabled="true" \
+        --set applicationSet.enabled="true" \
+        --set applicationSet.metrics.enabled="true" \
+        --set applicationSet.metrics.serviceMonitor.enabled="true" \
+        --set notifications.enabled="true" \
+        --set notifications.metrics.enabled="true" \
+        --set notifications.metrics.serviceMonitor.enabled="true" \
+        gitops argo/argo-cd
+      - |
+        argocd login  localhost:10080 --insecure --plaintext \
+        --username "admin" --password "${ADMIN_PWD}"
+      - |
+        kubectl -n argo-cd patch configmap/argocd-cm \
+        --type='json' \
+        --patch '[{"op": "add", "path": "/data/accounts.sysops", "value": "apiKey,login"}]'
+      - |
+        kubectl -n argo-cd patch configmap/argocd-cm \
+        --type='json' \
+        --patch '[{"op": "add", "path": "/data/accounts.backstage", "value": "apiKey,login"}]'
+      - |
+        kubectl -n argo-cd patch configmap/argocd-rbac-cm \
+        --type='json' \
+        --patch '[{"op": "add", "path": "/data/policy.csv", "value": "g, sysops, role:admin\ng, backstage, role:readonly\n"}]'
