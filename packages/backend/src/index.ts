@@ -57,4 +57,9 @@ backend.add(
   import('@backstage/plugin-catalog-backend-module-backstage-openapi'),
 );
 
+// tech-insights
+backend.add(import('@backstage-community/plugin-tech-insights-backend'));
+backend.add(import('@backstage-community/plugin-tech-insights-backend-module-jsonfc'));
+backend.add(import('@alithya-oss/backstage-plugin-tech-insights-backend-module-catalog-entities'));
+
 backend.start();

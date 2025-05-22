@@ -65,6 +65,12 @@ import {
   isPrometheusAvailable,
 } from '@roadiehq/backstage-plugin-prometheus';
 
+import {
+  EntityMaturitySummaryCard,
+  EntityMaturityScorecardContent,
+  EntityMaturitySummaryContent,
+} from '@backstage-community/plugin-tech-insights-maturity';
+
 const techdocsContent = (
   <EntityTechdocsContent>
     <TechDocsAddons>
@@ -146,11 +152,15 @@ const overviewContent = (
         <Grid item md={8} xs={10}>
           <EntityPrometheusAlertCard />
         </Grid>
-        <Grid item md={4} xs={10} >
+        <Grid item md={4} xs={10}>
           <EntityPrometheusGraphCard />
         </Grid>
       </EntitySwitch.Case>
     </EntitySwitch>
+
+    <Grid item md={12} xs={6}>
+      <EntityMaturitySummaryCard />
+    </Grid>
 
     <Grid item md={4} xs={12}>
       <EntityLinksCard />
@@ -165,6 +175,10 @@ const serviceEntityPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       {overviewContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/maturity" title="Maturity">
+      <EntityMaturityScorecardContent />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/ci-cd" title="CI/CD">
@@ -219,6 +233,10 @@ const websiteEntityPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       {overviewContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/maturity" title="Maturity">
+      <EntityMaturityScorecardContent />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/ci-cd" title="CI/CD">
@@ -353,6 +371,10 @@ const groupPage = (
         </Grid>
       </Grid>
     </EntityLayout.Route>
+
+    <EntityLayout.Route path="/maturity" title="Maturity">
+      <EntityMaturitySummaryContent />
+    </EntityLayout.Route>
   </EntityLayout>
 );
 
@@ -400,6 +422,10 @@ const systemPage = (
         unidirectional={false}
       />
     </EntityLayout.Route>
+
+    <EntityLayout.Route path="/maturity" title="Maturity">
+      <EntityMaturitySummaryContent />
+    </EntityLayout.Route>
   </EntityLayout>
 );
 
@@ -418,6 +444,10 @@ const domainPage = (
           <EntityHasSystemsCard variant="gridItem" />
         </Grid>
       </Grid>
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/maturity" title="Maturity">
+      <EntityMaturitySummaryContent />
     </EntityLayout.Route>
   </EntityLayout>
 );

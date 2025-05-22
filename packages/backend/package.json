@@ -17,6 +17,9 @@
     "start:prometheus": "docker run --mount type=bind,source=./monitoring/prometheus.yml,destination=/etc/prometheus/prometheus.yml --mount type=bind,source=./monitoring/backstage-rules.yml,destination=/etc/prometheus/backstage-rules.yml --publish published=9090,target=9090,protocol=tcp prom/prometheus --add-host=host.docker.internal:host-gateway"
   },
   "dependencies": {
+    "@alithya-oss/backstage-plugin-tech-insights-backend-module-catalog-entities": "^0.1.1",
+    "@backstage-community/plugin-tech-insights-backend": "^2.3.0",
+    "@backstage-community/plugin-tech-insights-backend-module-jsonfc": "^0.5.1",
     "@backstage/backend-defaults": "^0.9.0",
     "@backstage/config": "^1.3.2",
     "@backstage/plugin-app-backend": "^0.5.1",
