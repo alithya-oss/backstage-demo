@@ -246,6 +246,11 @@ techInsights:
           rank: 2
           solution: Add a group owner to the `spec.definition` field in the entity YAML definition
 
+infraWallet:
+  settings:
+    defaultGroupBy: none
+    defaultShowLastXMonths: 3
+
 argocd:
   # Default fallback credentials
   username: ${ARGOCD_USERNAME}
