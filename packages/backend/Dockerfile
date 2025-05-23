@@ -21,8 +21,21 @@ ENV PYTHON=/usr/bin/python3
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \
-    apt-get install -y --no-install-recommends python3 g++ build-essential && \
+    apt-get install -y --no-install-recommends python3 python3-venv g++ build-essential && \
     rm -rf /var/lib/apt/lists/*
+
+# Techdocs configuration
+ENV VIRTUAL_ENV="/opt/venv"
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+RUN pip install --no-cache \
+    'mkdocs-techdocs-core' \
+    'mkdocs-mermaid-plugin' \
+    'mkdocs-mermaid2-plugin' \
+    'mkdocs-diagrams' \
+    'mkdocs-glightbox' \
+    'mkdocs-kroki-plugin'
 
 # Install sqlite3 dependencies. You can skip this if you don't use sqlite3 in the image,
 # in which case you should also move better-sqlite3 to "devDependencies" in package.json.
