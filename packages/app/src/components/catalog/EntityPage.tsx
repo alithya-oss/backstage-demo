@@ -76,6 +76,12 @@ import {
   isInfraWalletAvailable,
 } from '@electrolux-oss/plugin-infrawallet';
 
+import {
+  ArgocdDeploymentSummary,
+  ArgocdDeploymentLifecycle,
+  isArgocdConfigured,
+} from '@backstage-community/plugin-redhat-argocd';
+
 const techdocsContent = (
   <EntityTechdocsContent>
     <TechDocsAddons>
@@ -95,6 +101,13 @@ const cicdContent = (
         <EntityGithubActionsContent />
       </EntitySwitch.Case>
      */}
+    
+    <EntitySwitch.Case if={e => Boolean(isArgocdConfigured(e))}>
+      <Grid item sm={12}>
+        <ArgocdDeploymentLifecycle />
+      </Grid>
+    </EntitySwitch.Case>
+
     <EntitySwitch.Case>
       <EmptyState
         title="No CI/CD available for this entity"
@@ -151,6 +164,14 @@ const overviewContent = (
     <Grid item md={6} xs={12}>
       <EntityCatalogGraphCard variant="gridItem" height={400} />
     </Grid>
+
+    <EntitySwitch>
+      <EntitySwitch.Case if={e => Boolean(isArgocdConfigured(e))}>
+        <Grid item sm={12}>
+          <ArgocdDeploymentSummary />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
 
     <EntitySwitch>
       <EntitySwitch.Case if={isPrometheusAvailable}>

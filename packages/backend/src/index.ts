@@ -65,4 +65,7 @@ backend.add(import('@alithya-oss/backstage-plugin-tech-insights-backend-module-c
 // infrawallet
 backend.add(import('@electrolux-oss/plugin-infrawallet-backend'))
 
+// argo-cd
+backend.add(import('@backstage-community/plugin-redhat-argocd-backend'));
+
 backend.start();

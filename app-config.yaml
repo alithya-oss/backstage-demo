@@ -245,3 +245,13 @@ techInsights:
           category: Integration
           rank: 2
           solution: Add a group owner to the `spec.definition` field in the entity YAML definition
+
+argocd:
+  # Default fallback credentials
+  username: ${ARGOCD_USERNAME}
+  password: ${ARGOCD_PASSWORD}
+  appLocatorMethods:
+    - type: 'config'
+      instances:
+        - name: primary
+          url: https://localhost.10080
