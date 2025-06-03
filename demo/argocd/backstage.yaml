@@ -1,0 +1,310 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backstage
+  namespace: argo-cd
+spec:
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: backstage
+  project: default
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated: {}
+  source:
+    chart: backstage
+    repoURL: https://backstage.github.io/charts
+    targetRevision: 2.5.2
+    helm:
+      releaseName: default
+      valuesObject:
+        serviceAccount:
+          create: true
+          name: backstage
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthcheck
+            port: 7007
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 2
+          timeoutSeconds: 2
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthcheck
+            port: 7007
+            scheme: HTTP
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2
+        service:
+          type: LoadBalancer
+          ports:
+            backend: 7007
+          annotations:
+            metallb.universe.tf/allow-shared-ip: edge-endpoint
+        postgresql:
+          enabled: true
+          auth:
+            username: backstage
+            password: hunter2
+          primary:
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+        metrics:
+          serviceMonitor:
+            enabled: true
+        backstage:
+          image:
+            registry: ghcr.io
+            repository: alithya-oss/backstage/demo
+            tag: 0.5.1
+          # extraEnvVarsSecrets:
+          #   - backstage-env
+          appConfig:
+            # Backstage override configuration for your local development environment
+            app:
+              title: Backstage tutorial
+              # Should be the same as backend.baseUrl when using the `app-backend` plugin.
+              baseUrl: http://localhost
+              listen:
+                host: 0.0.0.0
+                port: 3000
+
+            organization:
+              name: Testruction
+
+            backend:
+              infraWallet:
+                integrations:
+                  mock:
+                    - name: demo-mock-data
+              # Note that the baseUrl should be the URL that the browser and other clients
+              # should use when communicating with the backend, i.e. it needs to be
+              # reachable not just from within the backend host, but from all of your
+              # callers. When its value is "http://localhost:7007", it's strictly private
+              # and can't be reached by others.
+              baseUrl: http://localhost
+              # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
+              # all interfaces, the most permissive setting. The right value depends on your specific deployment.
+              listen:
+                host: 0.0.0.0
+                port: 7007
+
+              csp:
+                connect-src: ["'self'", 'http:', 'https:']
+                # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
+                # Default Helmet Content-Security-Policy values can be removed by setting the key to false
+              cors:
+                origin: http://localhost:3000
+              # config options: https://node-postgres.com/api/client
+              database:
+                client: pg
+                connection:
+                  host: ${POSTGRES_HOST}
+                  port: ${POSTGRES_PORT}
+                  user: ${POSTGRES_USER}
+                  password: ${POSTGRES_PASSWORD}
+                  # https://node-postgres.com/features/ssl
+                  # you can set the sslmode configuration option via the `PGSSLMODE` environment variable
+                  # see https://www.postgresql.org/docs/current/libpq-ssl.html Table 33.1. SSL Mode Descriptions (e.g. require)
+                  # ssl:
+                  #   ca: # if you have a CA file and want to verify it you can uncomment this section
+                  #     $file: <file-path>/ca/server.crt
+
+            integrations: {}
+              # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
+              # about setting up the GitHub integration here: https://backstage.io/docs/getting-started/configuration#setting-up-a-github-integration
+              # github:
+              #   - host: github.com
+              #     token: ${GITHUB_TOKEN}
+                ### Example for how to add your GitHub Enterprise instance using the API:
+                # - host: ghe.example.net
+                #   apiBaseUrl: https://ghe.example.net/api/v3
+                #   token: ${GHE_TOKEN}
+
+            proxy:
+              ### Example for how to add a proxy endpoint for the frontend.
+              ### A typical reason to do this is to handle HTTPS and CORS for internal services.
+              # endpoints:
+              #   '/test':
+              #     target: 'https://example.com'
+              #     changeOrigin: true
+              /prometheus0/api:
+                target: http://prometheus-operated.monitoring:9090/api/v1/
+
+            # Reference documentation http://backstage.io/docs/features/techdocs/configuration
+            # Note: After experimenting with basic setup, use CI/CD to generate docs
+            # and an external cloud storage when deploying TechDocs for production use-case.
+            # https://backstage.io/docs/features/techdocs/how-to-guides#how-to-migrate-from-techdocs-basic-to-recommended-deployment-approach
+            techdocs:
+              builder: 'local' # Alternatives - 'external'
+              generator:
+                runIn: 'local' # Alternatives - 'local'
+              publisher:
+                type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+
+            auth:
+              # see https://backstage.io/docs/auth/ to learn about auth providers
+              providers:
+                guest:
+                  dangerouslyAllowOutsideDevelopment: true
+
+            scaffolder:
+              # see https://backstage.io/docs/features/software-templates/configuration for software template options
+
+            catalog:
+              # Overrides the default list locations from app-config.yaml as these contain example data.
+              # See https://backstage.io/docs/features/entities/#adding-components-to-the-catalog for more details
+              # on how to get entities into the catalog.
+              import:
+                entityFilename: catalog-info.yaml
+                pullRequestBranchName: backstage-integration
+              rules:
+                - allow: [Component, System, API, Resource, Location]
+              locations:
+                - type: url
+                  target: https://github.com/testruction/backstage-tutorial/blob/main/entities/core/catalog-info.yaml
+                  rules:
+                    - allow: [User, Group, Domain]
+                - type: url
+                  target: https://github.com/testruction/fastapi-sqlalchemy-cockroachdb/blob/main/catalog-info.yaml
+                - type: url
+                  target: https://github.com/testruction/backstage-tutorial/blob/main/catalog-info.yaml
+                - type: url
+                  target: https://github.com/testruction/backstage-tutorial/blob/main/entities/paypal/catalog-info.yaml
+                - type: url
+                  target: https://github.com/testruction/backstage-tutorial/blob/main/entities/sock-shop/catalog-info.yaml
+            kubernetes:
+              serviceLocatorMethod:
+                type: multiTenant
+              clusterLocatorMethods:
+                - type: config
+                  clusters:
+                    - url: kubernetes.default.svc.cluster.local
+                      name: local
+                      authProvider: serviceAccount
+                      skipTLSVerify: false
+                      skipMetricsLookup: true
+
+            prometheus:
+              proxyPath: /prometheus0/api
+
+            argocd:
+              # username: admin
+              # password: admin
+              appLocatorMethods:
+                - type: 'config'
+                  instances:
+                    - name: argocd
+                      url: http://gitops-argocd-server.argo-cd:10080
+                      token: ${ARGOCD_AUTH_TOKEN}
+
+            infraWallet:
+              settings:
+                defaultGroupBy: none
+                defaultShowLastXMonths: 3
+
+            techInsights:
+              factRetrievers:
+                entityOwnershipFactRetriever:
+                  cadence: '*/15 * * * *'
+                  lifecycle:
+                    timeToLive:
+                      weeks: 2
+                entityMetadataFactRetriever:
+                  cadence: '*/15 * * * *'
+                  lifecycle:
+                    timeToLive:
+                      weeks: 2
+                techdocsFactRetriever:
+                  cadence: '*/15 * * * *'
+                  lifecycle:
+                    timeToLive:
+                      weeks: 2
+                apiDefinitionFactRetriever:
+                  cadence: '*/15 * * * *'
+                  lifecycle:
+                    timeToLive:
+                      weeks: 2
+                resourceTypeFactRetriever:
+                  cadence: '*/15 * * * *'
+                  lifecycle:
+                    timeToLive:
+                      weeks: 2
+              factChecker:
+                checks:
+                  groupOwnerCheck:
+                    type: json-rules-engine
+                    name: Group Owner Check
+                    description: Verifies that a group has been set as the spec.owner for this entity
+                    factIds:
+                      - entityOwnershipFactRetriever
+                    rule:
+                      conditions:
+                        all:
+                          - fact: hasGroupOwner
+                            operator: equal
+                            value: true
+                    metadata:
+                      category: Ownership
+                      rank: 1
+                      solution: Add a group owner to the `spec.owner` field in the entity YAML definition
+
+                  titleCheck:
+                    type: json-rules-engine
+                    name: Title Check
+                    description: Verifies that a Title, used to improve readability, has been set for this entity
+                    factIds:
+                      - entityMetadataFactRetriever
+                    rule:
+                      conditions:
+                        all:
+                          - fact: hasTitle
+                            operator: equal
+                            value: true
+                    metadata:
+                      category: Ownership
+                      rank: 1
+                      solution: Add a group owner to the `spec.title` field in the entity YAML definition
+
+                  techdocsCheck:
+                    type: json-rules-engine
+                    name: TechDocs Check
+                    description: Verifies that TechDocs has been enabled for this entity
+                    factIds:
+                      - techdocsFactRetriever
+                    rule:
+                      conditions:
+                        all:
+                          - fact: hasAnnotationBackstageIoTechdocsRef
+                            operator: equal
+                            value: true
+                    metadata:
+                      category: Maintainability
+                      rank: 2
+                      solution: Add a group owner to the `backstage.io/techdocs-ref` field in the entity YAML definition
+
+                  apiDefinitionCheck:
+                    type: json-rules-engine
+                    name: API definition Check
+                    description: Verifies that a API has a definition set
+                    factIds:
+                      - apiDefinitionFactRetriever
+                    rule:
+                      conditions:
+                        all:
+                          - fact: hasDefinition
+                            operator: equal
+                            value: true
+                    metadata:
+                      category: Integration
+                      rank: 2
+                      solution: Add a group owner to the `spec.definition` field in the entity YAML definition

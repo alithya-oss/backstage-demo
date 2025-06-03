@@ -54,14 +54,15 @@ proxy:
   #   '/test':
   #     target: 'https://example.com'
   #     changeOrigin: true
-  /prometheus/api:
-    # url to the api and path of your hosted prometheus instance
-    target: http://localhost:9090/api/v1/
-    changeOrigin: true
-    secure: false
-    credentials: dangerously-allow-unauthenticated
-    # headers:
-    #   Authorization: $YOUR_AUTH_TOKEN_IF_PROMETHEUS_IS_SECURED
+  endpoints:
+    /prometheus/api:
+      # url to the api and path of your hosted prometheus instance
+      target: http://localhost:9090/api/v1/
+      changeOrigin: true
+      secure: false
+      credentials: dangerously-allow-unauthenticated
+      # headers:
+      #   Authorization: $YOUR_AUTH_TOKEN_IF_PROMETHEUS_IS_SECURED
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
 # Note: After experimenting with basic setup, use CI/CD to generate docs
@@ -252,11 +253,13 @@ infraWallet:
     defaultShowLastXMonths: 3
 
 argocd:
+  revisionsToLoad: 15
+  localDevelopment: true
   # Default fallback credentials
   username: ${ARGOCD_USERNAME}
   password: ${ARGOCD_PASSWORD}
   appLocatorMethods:
     - type: 'config'
       instances:
-        - name: primary
-          url: https://localhost.10080
+        - name: instance0
+          url: http://127.0.0.1.10080
