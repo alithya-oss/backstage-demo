@@ -154,9 +154,22 @@ tasks:
         ' packages/backend/monitoring/prometheus.yml
 
   install:k3s:
-    desc: Install K3s with Argo projects
+    desc: Install K3S
+    summary: >
+      Traefik as it conflicts with the LoadBalancer service controller
     cmds:
-      - curl -sfL https://get.k3s.io | sh -
+      - curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='server --disable=traefik' sh -s - 
+
+  install:minikube:
+    desc: Install Minikube
+    cmds:
+      - mkdir -p .bin/
+      - |
+        curl -Lo .bin/minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+      - chmod +x .bin/minikube
+      - .bin/minikube config set driver docker
+      - .bin/minikube start
+
 
   install:crds:
     desc: Install required
@@ -168,14 +181,16 @@ tasks:
       - |
         helm upgrade --install \
         --version "{{.PROMETHEUS_CRDS_VERSION}}" \
-        prometheus-operator-crds prometheus-community/prometheus-operator-crds
+        prometheus-operator-crds \
+        prometheus-community/prometheus-operator-crds
 
   install:argo-cd:
     desc: Install ArgoCD
     vars:
       ARGO_CD_VERSION: latest
-    env:
       ADMIN_PWD: admin
+    env:
+      ADMIN_PWD: '{{.ADMIN_PWD}}'
     cmds:
       - mkdir -p .bin/
       - |
@@ -185,15 +200,14 @@ tasks:
       - helm repo add argo https://argoproj.github.io/argo-helm
       - helm repo update
       - |
-        ADMIN_BCRYPT=$(.bin/argocd account bcrypt --password $ADMIN_PWD) \
         helm upgrade --install \
         --wait \
         --namespace argo-cd \
         --create-namespace \
-        --set configs.secret.argocdServerAdminPassword="${ADMIN_BCRYPT}" \
+        --set configs.secret.argocdServerAdminPassword="$(.bin/argocd account bcrypt --password {{.ADMIN_PWD}})" \
         --set server.extraArgs[0]="--insecure" \
         --set server.service.type="LoadBalancer" \
-        --set server.service.servicePortHttp="32080" \
+        --set server.service.servicePortHttp="10080" \
         --set controller.metrics.enabled="true" \
         --set controller.metrics.serviceMonitor.enabled="true" \
         --set dex.enabled="true" \
@@ -213,8 +227,9 @@ tasks:
         --set notifications.metrics.serviceMonitor.enabled="true" \
         gitops argo/argo-cd
       - |
-        argocd login  localhost:10080 --insecure --plaintext \
-        --username "admin" --password "${ADMIN_PWD}"
+        .bin/argocd login  localhost:10080 --insecure --plaintext \
+        --username "admin" \
+        --password {{.ADMIN_PWD}}
       - |
         kubectl -n argo-cd patch configmap/argocd-cm \
         --type='json' \
@@ -227,3 +242,8 @@ tasks:
         kubectl -n argo-cd patch configmap/argocd-rbac-cm \
         --type='json' \
         --patch '[{"op": "add", "path": "/data/policy.csv", "value": "g, sysops, role:admin\ng, backstage, role:readonly\n"}]'
+
+  install:prometheus:
+    desc: Install Prometheus
+    cmds:
+      - .bin/argocd app create kube-prometheus -f demo/argocd/kube-prometheus.yaml --upsert
