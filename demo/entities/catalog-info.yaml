@@ -1,0 +1,13 @@
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-location
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: org-data
+spec:
+  type: url
+  targets:
+    - ./org/domains.yaml
+    - ./org/groups.yaml
+    - ./org/users.yaml
+    - ./apps/backstage.yaml

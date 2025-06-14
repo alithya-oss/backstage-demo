@@ -5,7 +5,8 @@ kind: System
 metadata:
   name: developer-portal
 spec:
-  owner: guests
+  owner: group:default/devex
+  domain: developer-experience
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -23,7 +24,7 @@ metadata:
 spec:
   system: developer-portal
   type: service
-  owner: guests
+  owner: group:default/devex
   lifecycle: experimental
   providesApis:
     - internal_backstage_openapi_doc
@@ -42,5 +43,5 @@ metadata:
 spec:
   system: developer-portal
   type: website
-  owner: guests
+  owner: group:default/devex
   lifecycle: experimental

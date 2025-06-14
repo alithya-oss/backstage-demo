@@ -1,0 +1,10 @@
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  title: Developer Experience
+  name: devex
+spec:
+  type: team
+  children: []

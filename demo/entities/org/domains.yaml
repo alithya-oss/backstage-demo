@@ -1,0 +1,20 @@
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-domain
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  title: Platform Engineering
+  name: platform-engineering
+  description: Maintenance of the internal developmenet platform
+spec:
+  owner: devex
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  title: Developer Experience
+  name: developer-experience
+  description: Maintenance of processes and tools helping to promote internal development best practices
+spec:
+  owner: devex
+  subdomainOf: platform-engineering
