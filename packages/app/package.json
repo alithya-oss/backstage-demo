@@ -14,6 +14,9 @@
     "lint": "backstage-cli package lint"
   },
   "dependencies": {
+    "@backstage-community/plugin-cicd-statistics": "^0.7.0",
+    "@backstage-community/plugin-cicd-statistics-module-github": "^0.4.0",
+    "@backstage-community/plugin-github-actions": "^0.11.1",
     "@backstage-community/plugin-redhat-argocd": "^1.20.1",
     "@backstage-community/plugin-tech-insights-maturity": "^0.2.2",
     "@backstage/app-defaults": "^1.6.2",

@@ -34,7 +34,7 @@ import {
   EntityOwnershipCard,
 } from '@backstage/plugin-org';
 import { EntityTechdocsContent } from '@backstage/plugin-techdocs';
-import { EmptyState } from '@backstage/core-components';
+import { EmptyState, TabbedLayout } from '@backstage/core-components';
 import {
   Direction,
   EntityCatalogGraphCard,
@@ -82,6 +82,13 @@ import {
   isArgocdConfigured,
 } from '@backstage-community/plugin-redhat-argocd';
 
+import { EntityCicdStatisticsContent } from '@backstage-community/plugin-cicd-statistics';
+
+import {
+  EntityGithubActionsContent,
+  isGithubActionsAvailable,
+} from '@backstage-community/plugin-github-actions';
+
 const techdocsContent = (
   <EntityTechdocsContent>
     <TechDocsAddons>
@@ -94,18 +101,10 @@ const cicdContent = (
   // This is an example of how you can implement your company's logic in entity page.
   // You can for example enforce that all components of type 'service' should use GitHubActions
   <EntitySwitch>
-    {/*
-      Here you can add support for different CI/CD services, for example
-      using @backstage-community/plugin-github-actions as follows:
-      <EntitySwitch.Case if={isGithubActionsAvailable}>
-        <EntityGithubActionsContent />
-      </EntitySwitch.Case>
-     */}
-    
-    <EntitySwitch.Case if={e => Boolean(isArgocdConfigured(e))}>
-      <Grid item sm={12}>
-        <ArgocdDeploymentLifecycle />
-      </Grid>
+    {/* Here you can add support for different CI/CD services, for example
+      using @backstage-community/plugin-github-actions as follows: */}
+    <EntitySwitch.Case if={isGithubActionsAvailable}>
+      <EntityGithubActionsContent />
     </EntitySwitch.Case>
 
     <EntitySwitch.Case>
@@ -216,7 +215,23 @@ const serviceEntityPage = (
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/ci-cd" title="CI/CD">
-      {cicdContent}
+      <TabbedLayout>
+        <TabbedLayout.Route path="/ci" title="Integration">
+          {cicdContent}
+        </TabbedLayout.Route>
+
+        <TabbedLayout.Route path="/cd" title="Deployment">
+          <EntitySwitch.Case if={e => Boolean(isArgocdConfigured(e))}>
+            <Grid item sm={12}>
+              <ArgocdDeploymentLifecycle />
+            </Grid>
+          </EntitySwitch.Case>
+        </TabbedLayout.Route>
+
+        <TabbedLayout.Route path="/ci-cd-statistics" title="Statistics">
+          <EntityCicdStatisticsContent />
+        </TabbedLayout.Route>
+      </TabbedLayout>
     </EntityLayout.Route>
 
     <EntityLayout.Route
@@ -229,7 +244,7 @@ const serviceEntityPage = (
 
     <EntityLayout.Route
       path="/prometheus"
-      title="Prometheus"
+      title="Monitoring"
       if={isPrometheusAvailable}
     >
       <EntityPrometheusContent />
@@ -274,7 +289,23 @@ const websiteEntityPage = (
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/ci-cd" title="CI/CD">
-      {cicdContent}
+      <TabbedLayout>
+        <TabbedLayout.Route path="/ci" title="Integration">
+          {cicdContent}
+        </TabbedLayout.Route>
+
+        <TabbedLayout.Route path="/cd" title="Deployment">
+          <EntitySwitch.Case if={e => Boolean(isArgocdConfigured(e))}>
+            <Grid item sm={12}>
+              <ArgocdDeploymentLifecycle />
+            </Grid>
+          </EntitySwitch.Case>
+        </TabbedLayout.Route>
+
+        <TabbedLayout.Route path="/ci-cd-statistics" title="Statistics">
+          <EntityCicdStatisticsContent />
+        </TabbedLayout.Route>
+      </TabbedLayout>
     </EntityLayout.Route>
 
     <EntityLayout.Route

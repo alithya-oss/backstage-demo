@@ -107,22 +107,15 @@ catalog:
       rules:
         - allow: [User, Group]
 
-    - type: file
-      target: ../../examples/backstage.yaml
+    - type: url
+      target: https://github.com/alithya-oss/backstage-demo/blob/main/demo/entities/org/users.yaml
+      rules:
+        - allow: [User]
+
+    - type: url
+      target: https://github.com/alithya-oss/backstage-demo/blob/main/demo/entities/backstage.yaml
       rules:
         - allow: [System, Component]
-
-  providers:
-    # see: https://github.com/backstage/backstage/tree/master/plugins/catalog-backend-module-backstage-openapi
-    backstageOpenapi:
-      plugins:
-        - catalog
-        - events
-        - search
-      entityOverrides:
-        spec:
-          owner: guests
-          system: developer-portal
 
     ## Uncomment these lines to add more example data
     # - type: url
@@ -136,6 +129,18 @@ catalog:
   # Experimental: Always use the search method in UrlReaderProcessor.
   # New adopters are encouraged to enable it as this behavior will be the default in a future release.
   useUrlReadersSearch: true
+
+  providers:
+    # see: https://github.com/backstage/backstage/tree/master/plugins/catalog-backend-module-backstage-openapi
+    backstageOpenapi:
+      plugins:
+        - catalog
+        - events
+        - search
+      entityOverrides:
+        spec:
+          owner: guests
+          system: developer-portal
 
 kubernetes:
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
@@ -262,4 +267,4 @@ argocd:
     - type: 'config'
       instances:
         - name: instance0
-          url: http://127.0.0.1.10080
+          url: http://localhost:80
