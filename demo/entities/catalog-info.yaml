@@ -5,7 +5,7 @@ kind: Location
 metadata:
   name: org-data
 spec:
-  type: url
+  # type: url
   targets:
     - ./org/domains.yaml
     - ./org/groups.yaml

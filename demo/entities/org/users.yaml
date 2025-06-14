@@ -5,11 +5,11 @@ kind: User
 metadata:
   name: fjudith
 spec:
-  memberOf: [devex]
+  memberOf: [group:default/devex, guests]
 ---
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
   name: fleveillee
 spec:
-  memberOf: [devex]
+  memberOf: [group:default/devex, guests]

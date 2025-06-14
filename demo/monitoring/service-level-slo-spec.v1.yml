@@ -1,0 +1,35 @@
+apiVersion: sloth.slok.dev/v1
+kind: PrometheusServiceLevel
+metadata:
+  name: backstage
+  namespace: backstage
+spec:
+  service: "default-backstage"
+  labels:
+    app: "backstage"
+    release: "backstage"
+    owner: "developer-experience"
+    repo: "alithya-oss/backstage-demo"
+    tier: "2"
+  slos:
+    - name: "requests-availability"
+      objective: 99.5
+      description: "Common SLO based on availability for HTTP request responses."
+      sli:
+        events:
+          errorQuery: sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[{{.window}}]))
+          totalQuery: sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage"}[{{.window}}]))
+      alerting:
+        name: BackstageHighErrorRate
+        labels:
+          category: "availability"
+        annotations:
+          summary: "High error rate on 'backstage' requests responses"
+        pageAlert:
+          labels:
+            severity: pageteam
+            routing_key: myteam
+        ticketAlert:
+          labels:
+            severity: "slack"
+            slack_channel: "#alerts-myteam"

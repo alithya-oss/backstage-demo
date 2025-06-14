@@ -24,6 +24,9 @@ import {
 } from '@backstage/core-components';
 import { useApi } from '@backstage/core-plugin-api';
 
+import { ToolSearchResultListItem } from '@backstage-community/plugin-explore';
+import BuildIcon from '@material-ui/icons/Build';
+
 const useStyles = makeStyles((theme: Theme) => ({
   bar: {
     padding: theme.spacing(1, 0),
@@ -69,6 +72,11 @@ const SearchPage = () => {
                   name: 'Documentation',
                   icon: <DocsIcon />,
                 },
+                {
+                  value: 'explore',
+                  name: 'Explore',
+                  icon: <BuildIcon />,
+                },
               ]}
             />
             <Paper className={classes.filters}>
@@ -112,6 +120,7 @@ const SearchPage = () => {
             <SearchResult>
               <CatalogSearchResultListItem icon={<CatalogIcon />} />
               <TechDocsSearchResultListItem icon={<DocsIcon />} />
+              <ToolSearchResultListItem icon={<BuildIcon />} />
             </SearchResult>
           </Grid>
         </Grid>

@@ -7,7 +7,7 @@ metadata:
   name: platform-engineering
   description: Maintenance of the internal developmenet platform
 spec:
-  owner: devex
+  owner: group:default/devex
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Domain
@@ -16,5 +16,5 @@ metadata:
   name: developer-experience
   description: Maintenance of processes and tools helping to promote internal development best practices
 spec:
-  owner: devex
+  owner: group:default/devex
   subdomainOf: platform-engineering

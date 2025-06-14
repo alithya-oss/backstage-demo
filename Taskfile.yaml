@@ -120,6 +120,16 @@ tasks:
       - yarn install --immutable
       - LOG_LEVEL=debug yarn start
 
+  run:k3s:
+    desc: Run Backstage inside Kubernetes
+    cmds:
+      - cmd: sudo systemctl stop k3s
+      - cmd: sudo /usr/local/bin/k3s server --disable="traefik"
+      - task: install:crds
+      - task: install:argo-cd
+      - task: install:prometheus
+      - task: install:backstage
+
   run:load-test:
     desc: Run load test
     cmds:
@@ -247,3 +257,19 @@ tasks:
     desc: Install Prometheus
     cmds:
       - .bin/argocd app create kube-prometheus -f demo/argocd/kube-prometheus.yaml --upsert
+
+  install:app:
+    desc: Install FastAPI demo app
+    cmds:
+      - .bin/argocd app create demo -f demo/argocd/fastapi-demo.yaml --upsert
+
+  install:backstage:
+    desc: Install Backstage app
+    cmds:
+      - .bin/argocd app create backstage -f demo/argocd/backstage.yaml --upsert
+      - |
+        sloth generate \
+        -i demo/monitoring/service-level-slo-spec.v1.yml \
+        -o demo/argocd/backstage-rule.yml
+      - kubectl apply -f demo/argocd/backstage-rule.yml
+      - kubectl apply -f demo/argocd/backstage-rbac.yaml

@@ -22,26 +22,6 @@ spec:
         serviceAccount:
           create: true
           name: backstage
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /healthcheck
-            port: 7007
-            scheme: HTTP
-          initialDelaySeconds: 60
-          periodSeconds: 10
-          successThreshold: 2
-          timeoutSeconds: 2
-        livenessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /healthcheck
-            port: 7007
-            scheme: HTTP
-          initialDelaySeconds: 120
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 2
         service:
           type: LoadBalancer
           ports:
@@ -65,7 +45,7 @@ spec:
           image:
             registry: ghcr.io
             repository: alithya-oss/backstage/demo
-            tag: 0.5.1
+            tag: 0.6.0
           # extraEnvVarsSecrets:
           #   - backstage-env
           appConfig:
@@ -79,7 +59,7 @@ spec:
                 port: 3000
 
             organization:
-              name: Testruction
+              name: Backstage
 
             backend:
               infraWallet:
@@ -137,8 +117,15 @@ spec:
               #   '/test':
               #     target: 'https://example.com'
               #     changeOrigin: true
-              /prometheus0/api:
-                target: http://prometheus-operated.monitoring:9090/api/v1/
+              endpoints:
+                /prometheus/api:
+                  # url to the api and path of your hosted prometheus instance
+                  target: http://prometheus-operated.monitoring:9090/api/v1/
+                  changeOrigin: true
+                  secure: false
+                  credentials: dangerously-allow-unauthenticated
+                  # headers:
+                  #   Authorization: $YOUR_AUTH_TOKEN_IF_PROMETHEUS_IS_SECURED
 
             # Reference documentation http://backstage.io/docs/features/techdocs/configuration
             # Note: After experimenting with basic setup, use CI/CD to generate docs
@@ -177,11 +164,24 @@ spec:
                 - type: url
                   target: https://github.com/testruction/fastapi-sqlalchemy-cockroachdb/blob/main/catalog-info.yaml
                 - type: url
-                  target: https://github.com/testruction/backstage-tutorial/blob/main/catalog-info.yaml
+                  target: https://github.com/alithya-oss/backstage-demo/blob/main/demo/entities/catalog-info.yaml
+                  rules:
+                    - allow: [Location, System, Component, Group, User]
                 - type: url
                   target: https://github.com/testruction/backstage-tutorial/blob/main/entities/paypal/catalog-info.yaml
                 - type: url
                   target: https://github.com/testruction/backstage-tutorial/blob/main/entities/sock-shop/catalog-info.yaml
+              providers:
+                # see: https://github.com/backstage/backstage/tree/master/plugins/catalog-backend-module-backstage-openapi
+                backstageOpenapi:
+                  plugins:
+                    - catalog
+                    - events
+                    - search
+                  entityOverrides:
+                    spec:
+                      owner: guests
+                      system: developer-portal
             kubernetes:
               serviceLocatorMethod:
                 type: multiTenant

@@ -31,6 +31,8 @@ import GroupIcon from '@material-ui/icons/People';
 import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
 import { InfraWalletIcon } from '@electrolux-oss/plugin-infrawallet';
 
+import LayersIcon from '@material-ui/icons/Layers';
+
 const useSidebarLogoStyles = makeStyles({
   root: {
     width: sidebarConfig.drawerWidthClosed,
@@ -78,6 +80,7 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         <SidebarItem icon={ExtensionIcon} to="api-docs" text="APIs" />
         <SidebarItem icon={LibraryBooks} to="docs" text="Docs" />
         <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />
+        <SidebarItem icon={LayersIcon} to="explore" text="Explore" />
         {/* End global nav */}
         <SidebarDivider />
         <SidebarScrollWrapper>

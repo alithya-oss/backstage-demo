@@ -39,6 +39,10 @@ import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/
 import { MaturityPage } from '@backstage-community/plugin-tech-insights-maturity';
 import { InfraWalletPage } from '@electrolux-oss/plugin-infrawallet';
 
+import { githubAuthApiRef } from '@backstage/core-plugin-api';
+
+import { ExplorePage } from '@backstage-community/plugin-explore';
+
 const app = createApp({
   apis,
   bindRoutes({ bind }) {
@@ -59,7 +63,20 @@ const app = createApp({
     });
   },
   components: {
-    SignInPage: props => <SignInPage {...props} auto providers={['guest']} />,
+    SignInPage: props => (
+      <SignInPage
+        {...props}
+        auto
+        providers={[
+          'guest',
+          {
+          id: 'github-auth-provider',
+          title: 'GitHub',
+          message: 'Sign in using GitHub',
+          apiRef: githubAuthApiRef,
+        }]}
+      />
+    ),
   },
 });
 
@@ -83,6 +100,7 @@ const routes = (
       </TechDocsAddons>
     </Route>
     <Route path="/create" element={<ScaffolderPage />} />
+    <Route path="/explore" element={<ExplorePage />} />
     <Route path="/api-docs" element={<ApiExplorerPage />} />
     <Route
       path="/catalog-import"
