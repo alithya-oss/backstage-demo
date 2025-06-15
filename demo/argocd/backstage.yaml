@@ -166,7 +166,7 @@ spec:
                 - type: url
                   target: https://github.com/alithya-oss/backstage-demo/blob/main/demo/entities/catalog-info.yaml
                   rules:
-                    - allow: [Location, System, Component, Group, User]
+                    - allow: [API, Component, Domain, Group, Location, Resource, System, User]
                 - type: url
                   target: https://github.com/testruction/backstage-tutorial/blob/main/entities/paypal/catalog-info.yaml
                 - type: url
@@ -308,3 +308,16 @@ spec:
                       category: Integration
                       rank: 2
                       solution: Add a group owner to the `spec.definition` field in the entity YAML definition
+
+            explore:
+              tools:
+                - title: Infrawallet
+                  description: Cloud cost monitoring by Electrolux OSS
+                  url: /infrawallet
+                  image: https://github.com/electrolux-oss/infrawallet/raw/main/plugins/infrawallet/docs/images/iw_demo.gif
+                  tags: [ finops, cost, monitoring ]
+                - title: Maturity
+                  description: Best practices auditing based on tech-insight
+                  url: /maturity
+                  image: https://github.com/backstage/community-plugins/raw/main/workspaces/tech-insights/plugins/tech-insights-maturity/img/maturityScorecardContent.png
+                  tags: [ audit, maturity, compliance ]
