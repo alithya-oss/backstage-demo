@@ -6,3 +6,5 @@ packages/*/src
 packages/*/node_modules
 plugins
 *.local.yaml
+!packages/backend/src/opentelemetry.js
+!packages/backend/src/prometheus.js
