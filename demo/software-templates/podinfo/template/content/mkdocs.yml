@@ -1,0 +1,39 @@
+site_name: Documentation du composant ${{ values.name }}.
+site_description: Documentation du composant ${{ values.name }}.
+
+plugins:
+  - techdocs-core
+
+theme:
+  name: material
+  language: fr
+  features:
+    - content.tooltips
+
+nav:
+  - Accueil: index.md
+  - Cas d'utilisation: cas-utilisation.md
+  - Architecture: architecture.md
+  - Sécurité: securite.md
+  - Surveillance: surveillance.md
+
+markdown_extensions:
+  - abbr
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed
+  - codehilite
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - attr_list
+  - admonition
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format

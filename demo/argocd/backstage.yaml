@@ -164,7 +164,7 @@ spec:
                 - type: url
                   target: https://github.com/testruction/fastapi-sqlalchemy-cockroachdb/blob/main/catalog-info.yaml
                 - type: url
-                  target: https://github.com/alithya-oss/backstage-demo/blob/main/demo/entities/catalog-info.yaml
+                  target: https://github.com/alithya-oss/backstage-demo/blob/main/demo/software-catalog/catalog-info.yaml
                   rules:
                     - allow: [API, Component, Domain, Group, Location, Resource, System, User]
                 - type: url

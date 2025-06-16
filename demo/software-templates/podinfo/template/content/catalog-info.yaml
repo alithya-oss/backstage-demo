@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.name | dump }}
+  annotations:
+    github.com/project-slug: ${{values.destination.owner + "/" + values.destination.repo}}
+    backstage.io/techdocs-ref: dir:.
+    'backstage.io/kubernetes-namespace': app-ns
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/name=${{ values.name }}-podinfo'
+    backstage.io/linguist: 'https://github.com/${{values.destination.owner + "/" + values.destination.repo}}'
+spec:
+  type: service
+  owner: user:guest
+  lifecycle: experimental
