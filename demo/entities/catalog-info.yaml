@@ -11,3 +11,4 @@ spec:
     - ./org/groups.yaml
     - ./org/users.yaml
     - ./apps/backstage.yaml
+    - ./apps/kube-prometheus.yaml
