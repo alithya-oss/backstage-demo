@@ -16,10 +16,12 @@ metadata:
   description: An example of a Backstage application backend.
   # Example for optional annotations
   annotations:
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/component=backstage'
     github.com/project-slug: alithya-oss/backstage-demo
     # backstage.io/techdocs-ref: dir:.
     prometheus.io/alert: BackstageHighErrorRate
     prometheus.io/rule: slo:sli_error:ratio_rate5m{sloth_service="backstage"}
+    
     argocd/app-name: backstage
 spec:
   system: developer-portal

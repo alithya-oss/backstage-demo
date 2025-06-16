@@ -45,7 +45,7 @@ spec:
           image:
             registry: ghcr.io
             repository: alithya-oss/backstage/demo
-            tag: 0.6.0
+            tag: 0.7.0
           # extraEnvVarsSecrets:
           #   - backstage-env
           appConfig:

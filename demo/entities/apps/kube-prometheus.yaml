@@ -5,7 +5,25 @@ kind: System
 metadata:
   name: kube-prometheus
 spec:
-  owner: guests
+  owner: prometheus-community
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  title: Alertmanager
+  name: arletmanageer
+  description: An example of a Alertmanager instance.
+  # Example for optional annotations
+  backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=alertmanager'
+  annotations:
+    github.com/project-slug: prometheus-operator/kube-prometheus
+    # backstage.io/techdocs-ref: dir:.
+    argocd/app-name: kube-prometheus
+spec:
+  system: monitoring
+  type: service
+  owner: prometheus-community
+  lifecycle: production
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -15,14 +33,15 @@ metadata:
   description: An example of a Prometheus instance.
   # Example for optional annotations
   annotations:
-    github.com/project-slug: alithya-oss/backstage-demo
+    github.com/project-slug: prometheus-operator/kube-prometheus
     # backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=prometheus'
     argocd/app-name: kube-prometheus
 spec:
   system: monitoring
   type: service
-  owner: guests
-  lifecycle: experimental
+  owner: prometheus-community
+  lifecycle: production
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Component
@@ -31,13 +50,13 @@ metadata:
   name: prometheus-operator
   description: An example of a Kube-Prometheus instance.
   # Example for optional annotations
+  backstage.io/kubernetes-label-selector: 'app.kubernetes.io/component=prometheus-operator'
   annotations:
-    github.com/project-slug: alithya-oss/backstage-demo
+    github.com/project-slug: prometheus-operator/kube-prometheus
     # backstage.io/techdocs-ref: dir:.
     argocd/app-name: kube-prometheus
 spec:
   system: monitoring
   type: service
-  owner: guests
-  lifecycle: experimental
----
+  owner: prometheus-community
+  lifecycle: production
