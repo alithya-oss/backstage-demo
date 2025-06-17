@@ -75,4 +75,10 @@ backend.add(
 // explore
 backend.add(import('@backstage-community/plugin-explore-backend'));
 
+// notification
+backend.add(import('@backstage/plugin-notifications-backend'));
+
+// signals
+backend.add(import('@backstage/plugin-signals-backend'));
+
 backend.start();

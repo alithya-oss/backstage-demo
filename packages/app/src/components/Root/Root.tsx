@@ -33,6 +33,8 @@ import { InfraWalletIcon } from '@electrolux-oss/plugin-infrawallet';
 
 import LayersIcon from '@material-ui/icons/Layers';
 
+import { NotificationsSidebarItem } from '@backstage/plugin-notifications';
+
 const useSidebarLogoStyles = makeStyles({
   root: {
     width: sidebarConfig.drawerWidthClosed,
@@ -65,6 +67,9 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
   <SidebarPage>
     <Sidebar>
       <SidebarLogo />
+      <SidebarDivider />
+         <NotificationsSidebarItem />
+      <SidebarDivider />
       <SidebarGroup label="Search" icon={<SearchIcon />} to="/search">
         <SidebarSearchModal />
       </SidebarGroup>

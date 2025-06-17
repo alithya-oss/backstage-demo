@@ -19,7 +19,7 @@ import {
 } from '@backstage/plugin-techdocs';
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
-import { UserSettingsPage } from '@backstage/plugin-user-settings';
+import { SettingsLayout, UserSettingsPage } from '@backstage/plugin-user-settings';
 import { apis } from './apis';
 import { entityPage } from './components/catalog/EntityPage';
 import { searchPage } from './components/search/SearchPage';
@@ -42,6 +42,10 @@ import { InfraWalletPage } from '@electrolux-oss/plugin-infrawallet';
 import { githubAuthApiRef } from '@backstage/core-plugin-api';
 
 import { ExplorePage } from '@backstage-community/plugin-explore';
+
+import { NotificationsPage, UserNotificationSettingsCard } from '@backstage/plugin-notifications';
+import { SignalsDisplay } from '@backstage/plugin-signals';
+import { AdvancedSettings } from './components/advancedSettings';
 
 const app = createApp({
   apis,
@@ -70,11 +74,11 @@ const app = createApp({
         providers={[
           'guest',
           {
-          id: 'github-auth-provider',
-          title: 'GitHub',
-          message: 'Sign in using GitHub',
-          apiRef: githubAuthApiRef,
-        }]}
+            id: 'github-auth-provider',
+            title: 'GitHub',
+            message: 'Sign in using GitHub',
+            apiRef: githubAuthApiRef,
+          }]}
       />
     ),
   },
@@ -113,10 +117,20 @@ const routes = (
     <Route path="/search" element={<SearchPage />}>
       {searchPage}
     </Route>
-    <Route path="/settings" element={<UserSettingsPage />} />
+    <Route path="/settings" element={<UserSettingsPage />}>
+      <SettingsLayout.Route path="/advanced" title="Advanced">
+        <AdvancedSettings />
+      </SettingsLayout.Route>
+      <SettingsLayout.Route path="/notifications" title="Notifications">
+        <UserNotificationSettingsCard
+          originNames={{ 'plugin:scaffolder': 'Scaffolder' }}
+        />
+      </SettingsLayout.Route>
+    </Route>
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
     <Route path="/maturity" element={<MaturityPage />} />
     <Route path="/infrawallet" element={<InfraWalletPage />} />
+    <Route path="/notifications" element={<NotificationsPage />} />
   </FlatRoutes>
 );
 
@@ -124,6 +138,7 @@ export default app.createRoot(
   <>
     <AlertDisplay />
     <OAuthRequestDialog />
+    <SignalsDisplay />
     <AppRouter>
       <Root>{routes}</Root>
     </AppRouter>
