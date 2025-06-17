@@ -12,4 +12,6 @@ spec:
     - ./org/users.yaml
     - ./apps/backstage.yaml
     - ./apps/kube-prometheus.yaml
+    - ./apps/paypal.yaml
+    - ./apps/sock-shop.yaml
     - ../software-templates/podinfo/template.yaml
