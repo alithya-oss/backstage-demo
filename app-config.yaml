@@ -209,7 +209,7 @@ techInsights:
         metadata:
           category: Ownership
           rank: 1
-          solution: Add a group owner to the `spec.title` field in the entity YAML definition
+          solution: Add a friendly name to the `spec.title` field in the entity YAML definition
 
       techdocsCheck:
         type: json-rules-engine
@@ -226,7 +226,9 @@ techInsights:
         metadata:
           category: Maintainability
           rank: 2
-          solution: Add a group owner to the `backstage.io/techdocs-ref` field in the entity YAML definition
+          solution: >
+            Add a the path to [Markdown/Mkdocs material](https://squidfunk.github.io/mkdocs-material/reference/) formatted documentation
+            to the `backstage.io/techdocs-ref` field in the entity YAML definition
 
       apiDefinitionCheck:
         type: json-rules-engine
@@ -243,7 +245,10 @@ techInsights:
         metadata:
           category: Integration
           rank: 2
-          solution: Add a group owner to the `spec.definition` field in the entity YAML definition
+          solution: >
+            Add an [api definition](https://backstage.io/docs/features/software-catalog/descriptor-format/#kind-api)
+            or a [substitutions](https://backstage.io/docs/features/software-catalog/descriptor-format/#substitutions-in-the-descriptor-format) >
+            to the `spec.definition` field in the entity YAML definition
 
 infraWallet:
   settings:
