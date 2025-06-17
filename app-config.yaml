@@ -107,7 +107,7 @@ catalog:
         - allow: [User, Group]
 
     - type: url
-      target: https://github.com/alithya-oss/backstage-demo/blob/main/demo/software-catalog/catalog-info.yaml
+      target: https://github.com/alithya-oss/backstage-demo/blob/main/software-catalog/catalog-info.yaml
       rules:
         - allow: [API, Component, Domain, Group, Location, Resource, System, User]
 

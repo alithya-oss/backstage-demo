@@ -153,10 +153,10 @@ tasks:
           .scrape_configs[1].job_name = "prometheus" |
           .scrape_configs[1].static_configs[0].targets[0] = "localhost:9090"
           ' packages/backend/monitoring/prometheus.yml
-      # - oslo validate -f demo/monitoring/slo-spec.v1alpha.yml
+      # - oslo validate -f deploy/monitoring/slo-spec.v1alpha.yml
       - cmd: >
           sloth generate
-          -i demo/monitoring/sloth-spec.v1.yml
+          -i deploy/monitoring/sloth-spec.v1.yml
           -o packages/backend/monitoring/backstage-rules.yml
       - promtool check rules packages/backend/monitoring/backstage-rules.yml
       - cmd: >
@@ -257,23 +257,43 @@ tasks:
     desc: Install Prometheus
     cmds:
       - task: install:crds
-      - cmd: .bin/argocd app create kube-prometheus -f demo/argocd/kube-prometheus.yaml --upsert
+      - cmd: .bin/argocd app create kube-prometheus -f deploy/argocd/kube-prometheus.yaml --upsert
 
   install:app:
     desc: Install FastAPI demo app
     cmds:
-      - cmd: .bin/argocd app create demo -f demo/argocd/fastapi-demo.yaml --upsert
+      - cmd: .bin/argocd app create demo -f deploy/argocd/fastapi-demo.yaml --upsert
 
   install:backstage:
     desc: Install Backstage app
     cmds:
-      - cmd: .bin/argocd app create backstage -f demo/argocd/backstage.yaml --upsert
+      - cmd: .bin/argocd app create backstage -f deploy/argocd/backstage.yaml --upsert
       - cmd: |
           sloth generate \
-          -i demo/monitoring/service-level-slo-spec.v1.yml \
-          -o demo/argocd/backstage-rule.yml
-      - cmd: kubectl apply -f demo/argocd/backstage-rule.yml
-      - cmd: kubectl apply -f demo/argocd/backstage-rbac.yaml
+          -i deploy/monitoring/service-level-slo-spec.v1.yml \
+          -o deploy/manifests/backstage-rule.yml
+      - cmd: kubectl apply -f deploy/manifests/backstage-rule.yml
+      - cmd: kubectl apply -f deploy/manifests/backstage-rbac.yaml
+
+  install:secrets:
+    desc: Install secrets
+    vars:
+      BACKSTAGE_PREFIX: backstage
+    dotenv: [ .env ]
+    cmds:
+      - cmd: |
+          rm -f deploy/manifests/{{.BACKSTAGE_PREFIX}}-secret-encrypted.yaml \
+          && kubectl create secret generic \
+          --namespace {{.BACKSTAGE_PREFIX}} \
+          {{.BACKSTAGE_PREFIX}}-env \
+          --from-literal="AUTH_GITHUB_CLIENT_ID=${AUTH_GITHUB_CLIENT_ID}" \
+          --from-literal="AUTH_GITHUB_CLIENT_SECRET=${AUTH_GITHUB_CLIENT_SECRET}" \
+          --from-literal="INTEGRATION_GITHUB_APP_ID=${INTEGRATION_GITHUB_APP_ID}" \
+          --from-literal="INTEGRATION_GITHUB_PRIVATE_KEY=${INTEGRATION_GITHUB_PRIVATE_KEY}" \
+          --from-literal="INTEGRATION_GITHUB_WEBHOOK_SECRET=${INTEGRATION_GITHUB_WEBHOOK_SECRET}" \
+          --dry-run=client -o yaml > deploy/manifests/{{.BACKSTAGE_PREFIX}}-secret.yaml \
+          && sops --encrypt deploy/manifests/{{.BACKSTAGE_PREFIX}}-secret.yaml > deploy/manifests/{{.BACKSTAGE_PREFIX}}-secret-encrypted.yaml \
+          && kubectl apply -f deploy/manifests/{{.BACKSTAGE_PREFIX}}-secret.yaml
 
   release:github:
     desc: Manually trigger Github release

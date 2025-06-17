@@ -38,25 +38,34 @@ spec:
               requests:
                 cpu: 100m
                 memory: 128Mi
+        service:
+          extraPorts:
+            - name: http-prom
+              port: 9464
+              targetPort: prometheus
+              protocol: TCP
         metrics:
           serviceMonitor:
             enabled: true
+            port: http-prom
         backstage:
           image:
             registry: ghcr.io
             repository: alithya-oss/backstage/demo
             tag: 0.7.0
-          # extraEnvVarsSecrets:
-          #   - backstage-env
+          command: ["node", "--require", "/app/prometheus.js", "packages/backend"]
+          extraEnvVarsSecrets:
+            - backstage-env
+          extraPorts:
+            - name: prometheus
+              containerPort: 9464
+              protocol: TCP
           appConfig:
             # Backstage override configuration for your local development environment
             app:
               title: Backstage tutorial
               # Should be the same as backend.baseUrl when using the `app-backend` plugin.
-              baseUrl: http://localhost
-              listen:
-                host: 0.0.0.0
-                port: 3000
+              baseUrl: http://localhost:7007
 
             organization:
               name: Backstage
@@ -71,7 +80,7 @@ spec:
               # reachable not just from within the backend host, but from all of your
               # callers. When its value is "http://localhost:7007", it's strictly private
               # and can't be reached by others.
-              baseUrl: http://localhost
+              baseUrl: http://localhost:7007
               # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
               # all interfaces, the most permissive setting. The right value depends on your specific deployment.
               listen:
@@ -83,7 +92,7 @@ spec:
                 # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
                 # Default Helmet Content-Security-Policy values can be removed by setting the key to false
               cors:
-                origin: http://localhost:3000
+                origin: http://localhost:7007
               # config options: https://node-postgres.com/api/client
               database:
                 client: pg
@@ -99,7 +108,14 @@ spec:
                   #   ca: # if you have a CA file and want to verify it you can uncomment this section
                   #     $file: <file-path>/ca/server.crt
 
-            integrations: {}
+              auth:
+                externalAccess:
+                  - type: static
+                    options:
+                      token: you-should-better-use-an-environment-variable-here
+                      subject: load-test
+
+            integrations:
               # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
               # about setting up the GitHub integration here: https://backstage.io/docs/getting-started/configuration#setting-up-a-github-integration
               # github:
@@ -109,6 +125,14 @@ spec:
                 # - host: ghe.example.net
                 #   apiBaseUrl: https://ghe.example.net/api/v3
                 #   token: ${GHE_TOKEN}
+              github:
+                - host: github.com
+                  apps:
+                    - appId: ${INTEGRATION_GITHUB_APP_ID}
+                      clientId: ${AUTH_GITHUB_CLIENT_ID}
+                      clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+                      privateKey: ${INTEGRATION_GITHUB_PRIVATE_KEY}
+                      webhookSecret: ${INTEGRATION_GITHUB_WEBHOOK_SECRET}
 
             proxy:
               ### Example for how to add a proxy endpoint for the frontend.
@@ -118,11 +142,10 @@ spec:
               #     target: 'https://example.com'
               #     changeOrigin: true
               endpoints:
-                /prometheus/api:
+                /prometheus0/api:
                   # url to the api and path of your hosted prometheus instance
                   target: http://prometheus-operated.monitoring:9090/api/v1/
                   changeOrigin: true
-                  secure: false
                   credentials: dangerously-allow-unauthenticated
                   # headers:
                   #   Authorization: $YOUR_AUTH_TOKEN_IF_PROMETHEUS_IS_SECURED
@@ -140,9 +163,19 @@ spec:
 
             auth:
               # see https://backstage.io/docs/auth/ to learn about auth providers
+              environment: production
               providers:
                 guest:
                   dangerouslyAllowOutsideDevelopment: true
+                github:
+                  production:
+                    clientId: ${AUTH_GITHUB_CLIENT_ID}
+                    clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+                    signIn:
+                      resolvers:
+                        - resolver: usernameMatchingUserEntityName
+                        - resolver: emailMatchingUserEntityProfileEmail
+                        - resolver: emailLocalPartMatchingUserEntityName
 
             scaffolder:
               # see https://backstage.io/docs/features/software-templates/configuration for software template options
@@ -164,7 +197,7 @@ spec:
                 - type: url
                   target: https://github.com/testruction/fastapi-sqlalchemy-cockroachdb/blob/main/catalog-info.yaml
                 - type: url
-                  target: https://github.com/alithya-oss/backstage-demo/blob/main/demo/software-catalog/catalog-info.yaml
+                  target: https://github.com/alithya-oss/backstage-demo/blob/main/software-catalog/catalog-info.yaml
                   rules:
                     - allow: [API, Component, Domain, Group, Location, Resource, System, User]
                 - type: url
@@ -182,6 +215,7 @@ spec:
                     spec:
                       owner: guests
                       system: developer-portal
+
             kubernetes:
               serviceLocatorMethod:
                 type: multiTenant
