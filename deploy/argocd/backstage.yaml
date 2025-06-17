@@ -51,7 +51,7 @@ spec:
           image:
             registry: ghcr.io
             repository: alithya-oss/backstage/demo
-            tag: 0.8.0
+            tag: 0.8.1
           command: ["node", "--require", "/app/prometheus.js", "packages/backend"]
           extraEnvVarsSecrets:
             - backstage-env
@@ -228,7 +228,7 @@ spec:
                     - search
                   entityOverrides:
                     spec:
-                      owner: guests
+                      owner: group:default/devex
                       system: developer-portal
 
             kubernetes:
