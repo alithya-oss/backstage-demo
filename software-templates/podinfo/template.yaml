@@ -16,6 +16,11 @@ spec:
       required:
         - name
       properties:
+        dryRun:
+          title: Dry run
+          description: Render only. Dot not write to SCM.
+          type: boolean
+          default: true
         name:
           title: Name
           type: string
@@ -50,7 +55,16 @@ spec:
           owner: ${{parameters.owner}}
           repoUrl: ${{parameters.repoUrl}}
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
-    - id: publish
+
+    - if: ${{ parameters.dryRun === true }}
+      id: debug-templating
+      name: Dry-Run
+      action: debug:log
+      input:
+        listWorkspace: with-contents
+
+    - if: ${{ parameters.dryRun === false }}
+      id: publish
       name: Publish
       action: publish:github
       input:
@@ -61,12 +75,28 @@ spec:
         defaultBranch: 'main'
 
     # The final step is to register our new component in the catalog.
-    - id: register
+    - if: ${{ parameters.dryRun === false }}
+      id: register
       name: Register
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
         catalogInfoPath: '/catalog-info.yaml'
+
+    - if: ${{ parameters.dryRun === false }}
+      id: sendNotification
+      action: notification:send
+      name: Notification portail
+      input:
+        recipients: entity
+        entityRefs:
+          - user:default/${{ user.entity.metadata.name }}
+          - ${{ parameters.owner }}
+        title: "New PodInfo project created"
+        info: "A new project rendered from the podinfo template has been submitted"
+        link: ${{ steps['publish'].output.remoteUrl }}
+        severity: low
+        scope: internal
 
   # Outputs are displayed to the user after a successful execution of the template.
   output:
