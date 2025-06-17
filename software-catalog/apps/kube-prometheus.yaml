@@ -20,7 +20,7 @@ metadata:
     # backstage.io/techdocs-ref: dir:.
     argocd/app-name: kube-prometheus
 spec:
-  system: monitoring
+  system: kube-prometheus
   type: service
   owner: prometheus-community
   lifecycle: production
@@ -38,7 +38,7 @@ metadata:
     backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=prometheus'
     argocd/app-name: kube-prometheus
 spec:
-  system: monitoring
+  system: kube-prometheus
   type: service
   owner: prometheus-community
   lifecycle: production
@@ -56,7 +56,7 @@ metadata:
     # backstage.io/techdocs-ref: dir:.
     argocd/app-name: kube-prometheus
 spec:
-  system: monitoring
+  system: kube-prometheus
   type: service
   owner: prometheus-community
   lifecycle: production
