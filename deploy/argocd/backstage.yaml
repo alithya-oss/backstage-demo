@@ -90,8 +90,22 @@ spec:
                 connect-src: ["'self'", 'http:', 'https:']
                 # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
                 # Default Helmet Content-Security-Policy values can be removed by setting the key to false
+                img-src:
+                  - "'self'"
+                  - 'data:'
+                  - 'https://backstage.io'
+                  - 'https://img.shields.io/'
+                  - 'https://api.dicebear.com/'
+                  - 'https://kroki.io/'
+                  - 'https://www.bestpractices.dev/'
+                  - 'https://api.securityscorecards.dev'
+                  - 'https://github.com'
+                  - 'https://raw.githubusercontent.com'
+                frame-src: ['https://www.youtube.com']
+              
               cors:
                 origin: http://localhost:7007
+              
               # config options: https://node-postgres.com/api/client
               database:
                 client: pg
