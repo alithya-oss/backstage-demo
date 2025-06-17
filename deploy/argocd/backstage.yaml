@@ -194,7 +194,7 @@ spec:
                 - type: url
                   target: https://github.com/alithya-oss/backstage-demo/blob/main/software-catalog/catalog-info.yaml
                   rules:
-                    - allow: [API, Component, Domain, Group, Location, Resource, System, User]
+                    - allow: [API, Component, Domain, Group, Location, Resource, System, Template, User]
               providers:
                 # see: https://github.com/backstage/backstage/tree/master/plugins/catalog-backend-module-backstage-openapi
                 backstageOpenapi:
