@@ -1,0 +1,21 @@
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format/#kind-location
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: sock-shop
+  namespace: demo
+  description: A generic microservices application, built @weaveworks
+spec:
+  targets:
+    - ./sock-shop/carts.yaml
+    - ./sock-shop/catalogue.yaml
+    - ./sock-shop/front-end.yaml
+    - ./sock-shop/orders.yaml
+    - ./sock-shop/payment.yaml
+    - ./sock-shop/queue-master.yaml
+    - ./sock-shop/rabbitmq.yaml
+    - ./sock-shop/session-db.yaml
+    - ./sock-shop/shipping.yaml
+    - ./sock-shop/user.yaml
+    - ./sock-shop/sockshop.yaml

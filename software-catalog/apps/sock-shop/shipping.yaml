@@ -1,0 +1,57 @@
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-component
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: shipping
+  namespace: sock-shop
+  description: Service that provides shipping capabilities.
+  tags:
+    - springboot
+    - java
+  annotations:
+    prometheus.io/alert: >-
+      shippingHighErrorRate
+    prometheus.io/rule: >-
+      slo:sli_error:ratio_rate5m{sloth_service="shipping"}
+    backstage.io/kubernetes-id: shipping
+    backstage.io/kubernetes-namespace: sock-shop
+    github.com/project-slug: microservices-demo/shipping
+    backstage.io/source-location: url:https://github.com/microservices-demo/shipping/
+  links:
+    - url: https://microservices-demo.github.io/docs
+      title: Documentation
+      icon: docs
+      type: docs
+    - url: https://microservices-demo.github.io/api
+      title: Documentation
+      icon: docs
+      type: apidocs
+spec:
+  type: service
+  lifecycle: production
+  owner: weaveworks
+  system: sock-shop
+  dependsOn:
+    - resource:rabbitmq
+    - component:orders
+  providesApis: []
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-api
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: shipping
+  namespace: sock-shop
+  description: Shipping API
+  tags:
+    - rest
+  # annotations:
+  #   # The annotation is deprecated, we use placeholders (see below) instead, remove it later.
+  #   backstage.io/definition-at-location: 'url:https://raw.githubusercontent.com/APIs-guru/openapi-directory/master/APIs/spotify.com/v1/swagger.yaml'
+spec:
+  type: openapi
+  lifecycle: production
+  owner: weaveworks
+  system: sock-shop
+  definition:
+    $text: https://github.com/microservices-demo/orders/blob/master/api-spec/orders.json

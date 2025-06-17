@@ -9,12 +9,52 @@ spec:
   type: team
   children: []
 ---
-# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  title: Third-party providers
+  name: 3rd-party-providers
+spec:
+  type: team
+  children:
+    - group:default:prometheus-community
+    - group:paypal:paypal
+    - group:default/testructers
+    - group:default/weaveworks
+---
 apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
   title: Prometheus Community
   name: prometheus-community
+spec:
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  title: Paypal
+  name: paypal
+  namespace: paypal
+spec:
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  title: Testructers
+  name: testructers
+spec:
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  title: Weaveworks
+  name: weaveworks
 spec:
   type: team
   children: []

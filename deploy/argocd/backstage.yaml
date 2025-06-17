@@ -190,19 +190,11 @@ spec:
                 - allow: [Component, System, API, Resource, Location]
               locations:
                 - type: url
-                  target: https://github.com/testruction/backstage-tutorial/blob/main/entities/core/catalog-info.yaml
-                  rules:
-                    - allow: [User, Group, Domain]
-                - type: url
                   target: https://github.com/testruction/fastapi-sqlalchemy-cockroachdb/blob/main/catalog-info.yaml
                 - type: url
                   target: https://github.com/alithya-oss/backstage-demo/blob/main/software-catalog/catalog-info.yaml
                   rules:
                     - allow: [API, Component, Domain, Group, Location, Resource, System, User]
-                - type: url
-                  target: https://github.com/testruction/backstage-tutorial/blob/main/entities/paypal/catalog-info.yaml
-                - type: url
-                  target: https://github.com/testruction/backstage-tutorial/blob/main/entities/sock-shop/catalog-info.yaml
               providers:
                 # see: https://github.com/backstage/backstage/tree/master/plugins/catalog-backend-module-backstage-openapi
                 backstageOpenapi:
