@@ -1,9 +1,0 @@
-apiVersion: backstage.io/v1alpha1
-kind: Location
-metadata:
-  name: podinfo-template-location
-spec:
-  type: url
-  lifecycle: production
-  targets:
-    - ./template/template.yaml
