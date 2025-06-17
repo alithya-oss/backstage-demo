@@ -190,6 +190,16 @@ spec:
                 - allow: [Component, System, API, Resource, Location]
               locations:
                 - type: url
+                  target: https://github.com/alithya-oss/backstage-demo/blob/main/examples/entities.yaml
+                - type: url
+                  target: https://github.com/alithya-oss/backstage-demo/blob/main/examples/template/template.yaml
+                  rules:
+                    - allow: [Template]
+                - type: url
+                  target: https://github.com/alithya-oss/backstage-demo/blob/main/examples/org.yaml
+                  rules:
+                    - allow: [User, Group]
+                - type: url
                   target: https://github.com/testruction/fastapi-sqlalchemy-cockroachdb/blob/main/catalog-info.yaml
                 - type: url
                   target: https://github.com/alithya-oss/backstage-demo/blob/main/software-catalog/catalog-info.yaml
