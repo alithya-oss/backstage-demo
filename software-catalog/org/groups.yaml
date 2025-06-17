@@ -17,8 +17,8 @@ metadata:
 spec:
   type: team
   children:
-    - group:default:prometheus-community
-    - group:paypal:paypal
+    - group:default/prometheus-community
+    - group:paypal/paypal
     - group:default/testructers
     - group:default/weaveworks
 ---
