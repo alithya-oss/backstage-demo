@@ -1,0 +1,59 @@
+---
+site_name: Démonstrateur Backstage
+site_description: Documentation du portail développeur.
+
+nav:
+  - Accueil: index.md
+  - Concepts:
+      - Catalogue logiciels: concepts/software-catalog.md
+      - Gabarits logiciels: concepts/software-templates.md
+  - Mainteneurs:
+      - Installation de Secret Operations (SOPS): maintainers/sops_install.md
+      - Guide de configuration Github: maintainers/github_config.md
+      - Guide de configuraiton Gitlab: maintainers/gitlab_config.md
+      - Guide de déploiement SOPS & Kubernetes: maintainers/sops_kubernetes.md
+  - Developpeurs:
+      - Catalog logiciel:
+          - Tutoriel:
+              - 'Gitlab: Interagir avec la base de code et le pipeline': developer/software-catalog/tutorial/01-gitlab.md
+              - 'End of Life: Rapporter la dette technique': developer/software-catalog/tutorial/02-endoflife.md
+              - 'Linguist: Rapporter les languages utilisés': developer/software-catalog/tutorial/02-linguist.md
+      - Magasin de gabarits:
+          - Guide de Style: developer/software-templates/01-style-guide.md
+          - Références rapides: developer/software-templates/02-quick-reference.md
+          - Tutoriel:
+              - Introduction: developerdeveloper/software-templates/tutorial/00-intro.md
+              - Créer le dépôt Git: developerdeveloper/software-templates/tutorial/01-git-repository.md
+              - Organiser les répertoires: developerdeveloper/software-templates/tutorial/02-git-directory-layout.md
+              - Déclarer la localisation du dépôt: developerdeveloper/software-templates/tutorial/03-catalog-location.md
+              - Publier la localisation du dépôt: developerdeveloper/software-templates/tutorial/04-publish-location.md
+              - Créer le dossier du gabarit: developerdeveloper/software-templates/tutorial/05-scaffolder-folder.md
+              - Créer le squelette de dépôt du gabarit: developerdeveloper/software-templates/tutorial/06-scaffolder-skeleton.md
+              - Le manifeste du gabarit: developerdeveloper/software-templates/tutorial/07-scaffolder-template-intro.md
+              - Créer le manifeste du gabarit: developerdeveloper/software-templates/tutorial/08-scaffolder-template.md
+              - Lancer l'éditeur de gabarits: developerdeveloper/software-templates/tutorial/09-scaffolder-template-editor.md
+              - Ajouter des paramètres au gabarit: developerdeveloper/software-templates/tutorial/10-scaffolder-template-parameters.md
+              - Ajouter des étapes au gabarit: developerdeveloper/software-templates/tutorial/11-scaffolder-template-steps.md
+
+# plugins:
+#   - techdocs-core
+#   - kroki
+
+theme:
+  name: material
+  language: fr
+  features:
+    - content.tooltips
+
+markdown_extensions:
+  - abbr
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
