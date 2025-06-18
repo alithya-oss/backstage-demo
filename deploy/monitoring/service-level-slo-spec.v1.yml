@@ -17,8 +17,8 @@ spec:
       description: "Common SLO based on availability for HTTP request responses."
       sli:
         events:
-          errorQuery: sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[{{.window}}]))
-          totalQuery: sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage"}[{{.window}}]))
+          errorQuery: sum(rate(http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[{{.window}}]))
+          totalQuery: sum(rate(http_request_duration_seconds_count{job="default-backstage"}[{{.window}}]))
       alerting:
         name: BackstageHighErrorRate
         labels:

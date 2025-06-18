@@ -17,9 +17,9 @@ spec:
   - name: sloth-slo-sli-recordings-default-backstage-requests-availability
     rules:
     - expr: |
-        (sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[5m])))
+        (sum(rate(http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[5m])))
         /
-        (sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage"}[5m])))
+        (sum(rate(http_request_duration_seconds_count{job="default-backstage"}[5m])))
       labels:
         app: backstage
         owner: developer-experience
@@ -32,9 +32,9 @@ spec:
         tier: "2"
       record: slo:sli_error:ratio_rate5m
     - expr: |
-        (sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[30m])))
+        (sum(rate(http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[30m])))
         /
-        (sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage"}[30m])))
+        (sum(rate(http_request_duration_seconds_count{job="default-backstage"}[30m])))
       labels:
         app: backstage
         owner: developer-experience
@@ -47,9 +47,9 @@ spec:
         tier: "2"
       record: slo:sli_error:ratio_rate30m
     - expr: |
-        (sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[1h])))
+        (sum(rate(http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[1h])))
         /
-        (sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage"}[1h])))
+        (sum(rate(http_request_duration_seconds_count{job="default-backstage"}[1h])))
       labels:
         app: backstage
         owner: developer-experience
@@ -62,9 +62,9 @@ spec:
         tier: "2"
       record: slo:sli_error:ratio_rate1h
     - expr: |
-        (sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[2h])))
+        (sum(rate(http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[2h])))
         /
-        (sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage"}[2h])))
+        (sum(rate(http_request_duration_seconds_count{job="default-backstage"}[2h])))
       labels:
         app: backstage
         owner: developer-experience
@@ -77,9 +77,9 @@ spec:
         tier: "2"
       record: slo:sli_error:ratio_rate2h
     - expr: |
-        (sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[6h])))
+        (sum(rate(http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[6h])))
         /
-        (sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage"}[6h])))
+        (sum(rate(http_request_duration_seconds_count{job="default-backstage"}[6h])))
       labels:
         app: backstage
         owner: developer-experience
@@ -92,9 +92,9 @@ spec:
         tier: "2"
       record: slo:sli_error:ratio_rate6h
     - expr: |
-        (sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[1d])))
+        (sum(rate(http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[1d])))
         /
-        (sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage"}[1d])))
+        (sum(rate(http_request_duration_seconds_count{job="default-backstage"}[1d])))
       labels:
         app: backstage
         owner: developer-experience
@@ -107,9 +107,9 @@ spec:
         tier: "2"
       record: slo:sli_error:ratio_rate1d
     - expr: |
-        (sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[3d])))
+        (sum(rate(http_request_duration_seconds_count{job="default-backstage",status_code=~"(5..|4..)"}[3d])))
         /
-        (sum(rate(grafana_http_request_duration_seconds_count{job="default-backstage"}[3d])))
+        (sum(rate(http_request_duration_seconds_count{job="default-backstage"}[3d])))
       labels:
         app: backstage
         owner: developer-experience
