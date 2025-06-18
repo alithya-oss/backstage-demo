@@ -221,11 +221,13 @@ const serviceEntityPage = (
         </TabbedLayout.Route>
 
         <TabbedLayout.Route path="/cd" title="Deployment">
-          <EntitySwitch.Case if={e => Boolean(isArgocdConfigured(e))}>
-            <Grid item sm={12}>
-              <ArgocdDeploymentLifecycle />
-            </Grid>
-          </EntitySwitch.Case>
+          <EntitySwitch>
+            <EntitySwitch.Case if={e => Boolean(isArgocdConfigured(e))}>
+              <Grid item sm={12}>
+                <ArgocdDeploymentLifecycle />
+              </Grid>
+            </EntitySwitch.Case>
+          </EntitySwitch>
         </TabbedLayout.Route>
 
         <TabbedLayout.Route path="/ci-cd-statistics" title="Statistics">
@@ -295,11 +297,13 @@ const websiteEntityPage = (
         </TabbedLayout.Route>
 
         <TabbedLayout.Route path="/cd" title="Deployment">
-          <EntitySwitch.Case if={e => Boolean(isArgocdConfigured(e))}>
-            <Grid item sm={12}>
-              <ArgocdDeploymentLifecycle />
-            </Grid>
-          </EntitySwitch.Case>
+          <EntitySwitch>
+            <EntitySwitch.Case if={e => Boolean(isArgocdConfigured(e))}>
+              <Grid item sm={12}>
+                <ArgocdDeploymentLifecycle />
+              </Grid>
+            </EntitySwitch.Case>
+          </EntitySwitch>
         </TabbedLayout.Route>
 
         <TabbedLayout.Route path="/ci-cd-statistics" title="Statistics">
