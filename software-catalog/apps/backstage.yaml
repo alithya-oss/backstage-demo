@@ -19,7 +19,7 @@ metadata:
   annotations:
     backstage.io/kubernetes-label-selector: 'app.kubernetes.io/component=backstage'
     github.com/project-slug: alithya-oss/backstage-demo
-    backstage.io/techdocs-ref: dir:../
+    backstage.io/techdocs-ref: dir:../../
     prometheus.io/alert: BackstageHighErrorRate
     prometheus.io/rule: slo:sli_error:ratio_rate5m{sloth_service="default-backstage"}
     argocd/app-name: backstage
@@ -40,7 +40,7 @@ metadata:
   # Example for optional annotations
   annotations:
     github.com/project-slug: alithya-oss/backstage-demo
-    # backstage.io/techdocs-ref: dir:.
+    backstage.io/techdocs-ref: dir:../../
     argocd/app-name: backstage
 spec:
   system: developer-portal
