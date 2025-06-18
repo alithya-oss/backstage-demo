@@ -247,9 +247,10 @@ spec:
               proxyPath: /prometheus0/api
 
             argocd:
+              revisionsToLoad: 15
+              localDevelopment: true
               username: admin
               password: admin
-              localDevelopment: true
               appLocatorMethods:
                 - type: 'config'
                   instances:
