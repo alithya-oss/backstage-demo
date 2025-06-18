@@ -51,7 +51,7 @@ spec:
           image:
             registry: ghcr.io
             repository: alithya-oss/backstage/demo
-            tag: 0.8.1
+            tag: 0.8.2
           command: ["node", "--require", "/app/prometheus.js", "packages/backend"]
           extraEnvVarsSecrets:
             - backstage-env
@@ -241,20 +241,22 @@ spec:
                       name: local
                       authProvider: serviceAccount
                       skipTLSVerify: false
-                      skipMetricsLookup: true
+                      skipMetricsLookup: false
 
             prometheus:
               proxyPath: /prometheus0/api
 
             argocd:
-              # username: admin
-              # password: admin
+              username: admin
+              password: admin
+              localDevelopment: true
               appLocatorMethods:
                 - type: 'config'
                   instances:
-                    - name: argocd
+                    - name: instance0
                       url: http://gitops-argocd-server.argo-cd:10080
-                      token: ${ARGOCD_AUTH_TOKEN}
+                      username: admin
+                      password: admin
 
             infraWallet:
               settings:

@@ -51,3 +51,6 @@ rules:
     verbs:
       - get
       - list
+  - apiGroups: ['']
+    resources: ['pods/log']
+    verbs: ['get']

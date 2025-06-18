@@ -109,7 +109,7 @@ catalog:
     - type: url
       target: https://github.com/alithya-oss/backstage-demo/blob/main/software-catalog/catalog-info.yaml
       rules:
-        - allow: [API, Component, Domain, Group, Location, Resource, System, User]
+        - allow: [API, Component, Domain, Group, Location, Resource, System, Template, User]
 
     ## Uncomment these lines to add more example data
     # - type: url
@@ -257,6 +257,7 @@ infraWallet:
 
 argocd:
   revisionsToLoad: 15
+  localDevelopment: true
   username: ${ARGOCD_USERNAME}
   password: ${ARGOCD_PASSWORD}
   appLocatorMethods:
