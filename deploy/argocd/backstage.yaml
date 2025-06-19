@@ -60,10 +60,8 @@ spec:
               containerPort: 9464
               protocol: TCP
           appConfig:
-            # Backstage override configuration for your local development environment
             app:
               title: Backstage tutorial
-              # Should be the same as backend.baseUrl when using the `app-backend` plugin.
               baseUrl: http://localhost:7007
 
             organization:
@@ -74,22 +72,13 @@ spec:
                 integrations:
                   mock:
                     - name: demo-mock-data
-              # Note that the baseUrl should be the URL that the browser and other clients
-              # should use when communicating with the backend, i.e. it needs to be
-              # reachable not just from within the backend host, but from all of your
-              # callers. When its value is "http://localhost:7007", it's strictly private
-              # and can't be reached by others.
               baseUrl: http://localhost:7007
-              # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
-              # all interfaces, the most permissive setting. The right value depends on your specific deployment.
               listen:
                 host: 0.0.0.0
                 port: 7007
 
               csp:
                 connect-src: ["'self'", 'http:', 'https:']
-                # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
-                # Default Helmet Content-Security-Policy values can be removed by setting the key to false
                 img-src:
                   - "'self'"
                   - 'data:'
@@ -105,8 +94,7 @@ spec:
               
               cors:
                 origin: http://localhost:7007
-              
-              # config options: https://node-postgres.com/api/client
+
               database:
                 client: pg
                 connection:
@@ -114,12 +102,6 @@ spec:
                   port: ${POSTGRES_PORT}
                   user: ${POSTGRES_USER}
                   password: ${POSTGRES_PASSWORD}
-                  # https://node-postgres.com/features/ssl
-                  # you can set the sslmode configuration option via the `PGSSLMODE` environment variable
-                  # see https://www.postgresql.org/docs/current/libpq-ssl.html Table 33.1. SSL Mode Descriptions (e.g. require)
-                  # ssl:
-                  #   ca: # if you have a CA file and want to verify it you can uncomment this section
-                  #     $file: <file-path>/ca/server.crt
 
               auth:
                 externalAccess:
@@ -129,15 +111,6 @@ spec:
                       subject: load-test
 
             integrations:
-              # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
-              # about setting up the GitHub integration here: https://backstage.io/docs/getting-started/configuration#setting-up-a-github-integration
-              # github:
-              #   - host: github.com
-              #     token: ${GITHUB_TOKEN}
-                ### Example for how to add your GitHub Enterprise instance using the API:
-                # - host: ghe.example.net
-                #   apiBaseUrl: https://ghe.example.net/api/v3
-                #   token: ${GHE_TOKEN}
               github:
                 - host: github.com
                   apps:
@@ -148,34 +121,20 @@ spec:
                       webhookSecret: ${INTEGRATION_GITHUB_WEBHOOK_SECRET}
 
             proxy:
-              ### Example for how to add a proxy endpoint for the frontend.
-              ### A typical reason to do this is to handle HTTPS and CORS for internal services.
-              # endpoints:
-              #   '/test':
-              #     target: 'https://example.com'
-              #     changeOrigin: true
               endpoints:
                 /prometheus0/api:
-                  # url to the api and path of your hosted prometheus instance
                   target: http://prometheus-operated.monitoring:9090/api/v1/
                   changeOrigin: true
                   credentials: dangerously-allow-unauthenticated
-                  # headers:
-                  #   Authorization: $YOUR_AUTH_TOKEN_IF_PROMETHEUS_IS_SECURED
 
-            # Reference documentation http://backstage.io/docs/features/techdocs/configuration
-            # Note: After experimenting with basic setup, use CI/CD to generate docs
-            # and an external cloud storage when deploying TechDocs for production use-case.
-            # https://backstage.io/docs/features/techdocs/how-to-guides#how-to-migrate-from-techdocs-basic-to-recommended-deployment-approach
             techdocs:
-              builder: 'local' # Alternatives - 'external'
+              builder: 'local'
               generator:
-                runIn: 'local' # Alternatives - 'local'
+                runIn: 'local'
               publisher:
-                type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+                type: 'local'
 
             auth:
-              # see https://backstage.io/docs/auth/ to learn about auth providers
               environment: production
               providers:
                 guest:
@@ -191,17 +150,16 @@ spec:
                         - resolver: emailLocalPartMatchingUserEntityName
 
             scaffolder:
-              # see https://backstage.io/docs/features/software-templates/configuration for software template options
+
 
             catalog:
-              # Overrides the default list locations from app-config.yaml as these contain example data.
-              # See https://backstage.io/docs/features/entities/#adding-components-to-the-catalog for more details
-              # on how to get entities into the catalog.
               import:
                 entityFilename: catalog-info.yaml
                 pullRequestBranchName: backstage-integration
+              
               rules:
                 - allow: [Component, System, API, Resource, Location]
+              
               locations:
                 - type: url
                   target: https://github.com/alithya-oss/backstage-demo/blob/main/examples/entities.yaml
@@ -219,8 +177,8 @@ spec:
                   target: https://github.com/alithya-oss/backstage-demo/blob/main/software-catalog/catalog-info.yaml
                   rules:
                     - allow: [API, Component, Domain, Group, Location, Resource, System, Template, User]
+              
               providers:
-                # see: https://github.com/backstage/backstage/tree/master/plugins/catalog-backend-module-backstage-openapi
                 backstageOpenapi:
                   plugins:
                     - catalog
@@ -234,6 +192,7 @@ spec:
             kubernetes:
               serviceLocatorMethod:
                 type: multiTenant
+              
               clusterLocatorMethods:
                 - type: config
                   clusters:
