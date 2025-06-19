@@ -23,6 +23,7 @@ metadata:
     prometheus.io/alert: BackstageHighErrorRate
     prometheus.io/rule: slo:sli_error:ratio_rate5m{sloth_service="default-backstage"}
     argocd/app-name: backstage
+    argocd/app-namespace: argo-cd
 spec:
   system: developer-portal
   type: service
@@ -42,6 +43,7 @@ metadata:
     github.com/project-slug: alithya-oss/backstage-demo
     backstage.io/techdocs-ref: dir:../../
     argocd/app-name: backstage
+    argocd/app-namespace: argo-cd
 spec:
   system: developer-portal
   type: website
