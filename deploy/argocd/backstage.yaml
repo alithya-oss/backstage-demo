@@ -51,7 +51,7 @@ spec:
           image:
             registry: ghcr.io
             repository: alithya-oss/backstage/demo
-            tag: 0.8.5
+            tag: 0.8.6
           command: ["node", "--require", "/app/prometheus.js", "packages/backend"]
           extraEnvVarsSecrets:
             - backstage-env
@@ -156,10 +156,10 @@ spec:
               import:
                 entityFilename: catalog-info.yaml
                 pullRequestBranchName: backstage-integration
-              
+
               rules:
                 - allow: [Component, System, API, Resource, Location]
-              
+
               locations:
                 - type: url
                   target: https://github.com/alithya-oss/backstage-demo/blob/main/examples/entities.yaml
@@ -177,7 +177,7 @@ spec:
                   target: https://github.com/alithya-oss/backstage-demo/blob/main/software-catalog/catalog-info.yaml
                   rules:
                     - allow: [API, Component, Domain, Group, Location, Resource, System, Template, User]
-              
+
               providers:
                 backstageOpenapi:
                   plugins:
@@ -192,7 +192,7 @@ spec:
             kubernetes:
               serviceLocatorMethod:
                 type: multiTenant
-              
+
               clusterLocatorMethods:
                 - type: config
                   clusters:
