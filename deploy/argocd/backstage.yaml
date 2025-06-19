@@ -51,7 +51,7 @@ spec:
           image:
             registry: ghcr.io
             repository: alithya-oss/backstage/demo
-            tag: 0.8.4
+            tag: 0.8.5
           command: ["node", "--require", "/app/prometheus.js", "packages/backend"]
           extraEnvVarsSecrets:
             - backstage-env
