@@ -204,6 +204,25 @@ const overviewContent = (
   </Grid>
 );
 
+const runContent = (
+  <TabbedLayout>
+    <TabbedLayout.Route path="/operate" title="Operate">
+      <EntitySwitch>
+        <EntitySwitch.Case if={isKubernetesAvailable}>
+          <EntityKubernetesContent />
+        </EntitySwitch.Case>
+      </EntitySwitch>
+    </TabbedLayout.Route>
+    <TabbedLayout.Route path="/monitoring" title="Monitoring">
+      <EntitySwitch>
+        <EntitySwitch.Case if={isPrometheusAvailable}>
+          <EntityPrometheusContent />
+        </EntitySwitch.Case>
+      </EntitySwitch>
+    </TabbedLayout.Route>
+  </TabbedLayout>
+);
+
 const serviceEntityPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
@@ -222,7 +241,7 @@ const serviceEntityPage = (
 
         <TabbedLayout.Route path="/cd" title="Deployment">
           <EntitySwitch>
-            <EntitySwitch.Case if={e => Boolean(isArgocdConfigured(e))}>
+            <EntitySwitch.Case if={isArgocdConfigured}>
               <Grid item sm={12}>
                 <ArgocdDeploymentLifecycle />
               </Grid>
@@ -236,20 +255,8 @@ const serviceEntityPage = (
       </TabbedLayout>
     </EntityLayout.Route>
 
-    <EntityLayout.Route
-      path="/kubernetes"
-      title="Kubernetes"
-      if={isKubernetesAvailable}
-    >
-      <EntityKubernetesContent />
-    </EntityLayout.Route>
-
-    <EntityLayout.Route
-      path="/prometheus"
-      title="Monitoring"
-      if={isPrometheusAvailable}
-    >
-      <EntityPrometheusContent />
+    <EntityLayout.Route path="/run" title="Run">
+      {runContent}
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/api" title="API">
@@ -298,7 +305,7 @@ const websiteEntityPage = (
 
         <TabbedLayout.Route path="/cd" title="Deployment">
           <EntitySwitch>
-            <EntitySwitch.Case if={e => Boolean(isArgocdConfigured(e))}>
+            <EntitySwitch.Case if={isArgocdConfigured}>
               <Grid item sm={12}>
                 <ArgocdDeploymentLifecycle />
               </Grid>
@@ -312,12 +319,8 @@ const websiteEntityPage = (
       </TabbedLayout>
     </EntityLayout.Route>
 
-    <EntityLayout.Route
-      path="/kubernetes"
-      title="Kubernetes"
-      if={isKubernetesAvailable}
-    >
-      <EntityKubernetesContent />
+    <EntityLayout.Route path="/run" title="Run">
+      {runContent}
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/dependencies" title="Dependencies">
