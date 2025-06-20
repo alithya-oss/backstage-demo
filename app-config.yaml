@@ -107,6 +107,9 @@ catalog:
         - allow: [User, Group]
 
     - type: url
+      target: https://github.com/testruction/fastapi-sqlalchemy-cockroachdb/blob/main/catalog-info.yaml
+
+    - type: url
       target: https://github.com/alithya-oss/backstage-demo/blob/main/software-catalog/catalog-info.yaml
       rules:
         - allow: [API, Component, Domain, Group, Location, Resource, System, Template, User]

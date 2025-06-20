@@ -44,7 +44,7 @@ scenarios:
           #     headers:
           #       Authorization: Bearer {{ $env.LOAD_TEST_TOKEN }}
           - get:
-              url: '/api/argocd/argoInstance/primary/applications/backstage'
+              url: '/api/argocd/argoInstance/primary/applications/demo'
               headers:
                 Authorization: Bearer {{ $env.LOAD_TEST_TOKEN }}
           # - get:
