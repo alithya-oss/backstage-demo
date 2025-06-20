@@ -68,9 +68,9 @@ backend.add(import('@electrolux-oss/plugin-infrawallet-backend'))
 
 // argo-cd
 backend.add(import('@backstage-community/plugin-redhat-argocd-backend'));
-backend.add(
-  import('@roadiehq/scaffolder-backend-argocd'),
-);
+// backend.add(
+//   import('@roadiehq/scaffolder-backend-argocd'),
+// );
 
 // explore
 backend.add(import('@backstage-community/plugin-explore-backend'));

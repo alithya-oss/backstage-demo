@@ -31,16 +31,20 @@ config:
 scenarios:
   - flow:
       - loop:
+          # - get:
+          #     url: '/api/catalog/entities'
+          #     headers:
+          #       Authorization: Bearer {{ $env.LOAD_TEST_TOKEN }}
+          # - get:
+          #     url: '/api/catalog/entities/by-name/component/default/backstage'
+          #     headers:
+          #       Authorization: Bearer {{ $env.LOAD_TEST_TOKEN }}
+          # - get:
+          #     url: '/api/catalog/entities/by-name/system/should/fail'
+          #     headers:
+          #       Authorization: Bearer {{ $env.LOAD_TEST_TOKEN }}
           - get:
-              url: '/api/catalog/entities'
-              headers:
-                Authorization: Bearer {{ $env.LOAD_TEST_TOKEN }}
-          - get:
-              url: '/api/catalog/entities/by-name/component/default/backstage'
-              headers:
-                Authorization: Bearer {{ $env.LOAD_TEST_TOKEN }}
-          - get:
-              url: '/api/catalog/entities/by-name/system/should/fail'
+              url: '/api/argocd/argoInstance/primary/applications/backstage'
               headers:
                 Authorization: Bearer {{ $env.LOAD_TEST_TOKEN }}
           # - get:
