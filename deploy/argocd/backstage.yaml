@@ -91,7 +91,7 @@ spec:
                   - 'https://github.com'
                   - 'https://raw.githubusercontent.com'
                 frame-src: ['https://www.youtube.com']
-              
+
               cors:
                 origin: http://localhost:7007
 
@@ -214,7 +214,7 @@ spec:
                 - type: 'config'
                   instances:
                     - name: instance0
-                      url: http://gitops-argocd-server.argo-cd:10080
+                      url: http://gitops-argocd-server.argo-cd:32080
                       username: admin
                       password: admin
 

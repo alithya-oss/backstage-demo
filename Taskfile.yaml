@@ -217,7 +217,7 @@ tasks:
           --set configs.secret.argocdServerAdminPassword="$(.bin/argocd account bcrypt --password {{.ADMIN_PWD}})" \
           --set server.extraArgs[0]="--insecure" \
           --set server.service.type="LoadBalancer" \
-          --set server.service.servicePortHttp="10080" \
+          --set server.service.servicePortHttp="32080" \
           --set configs.params.server.insecure="true" \
           --set controller.metrics.enabled="true" \
           --set controller.metrics.serviceMonitor.enabled="true" \
@@ -238,7 +238,7 @@ tasks:
           --set notifications.metrics.serviceMonitor.enabled="true" \
           gitops argo/argo-cd
       - cmd: |
-          .bin/argocd login  localhost:10080 --insecure --plaintext \
+          .bin/argocd login  localhost:32080 --insecure --plaintext \
           --username "admin" \
           --password {{.ADMIN_PWD}}
       - cmd: |
