@@ -47,10 +47,28 @@ services:
       - ./packages/backend/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./packages/backend/monitoring/backstage-rules.yml:/etc/prometheus/backstage-rules.yml
 
+  promlens:
+    image: docker.io/prom/promlens:latest
+    ports:
+      - '${PROMLENS_PORT:-8080}:8080'
+
+  openobserve:
+    image: public.ecr.aws/zinclabs/openobserve:latest
+    restart: unless-stopped
+    environment:
+      ZO_ROOT_USER_EMAIL: "root@example.com"
+      ZO_ROOT_USER_PASSWORD: "Complexpass#123"
+    ports:
+      - "35080:5080"
+    volumes:
+      - backstage-openobserve:/data
+
 volumes:
   # backstage-postgres:
   #   driver: local
   # backstage-redis:
   #   driver: local
   backstage-prometheus:
+    driver: local
+  backstage-openobserve:
     driver: local
