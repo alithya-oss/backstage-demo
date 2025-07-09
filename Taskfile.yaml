@@ -7,6 +7,10 @@ dotenv: ['.env']
 vars:
   GREETING: Hello, World!
 
+includes:
+  istio: https://raw.githubusercontent.com/fjudith/tasks/main/istio-ica/Taskfile.yaml
+
+
 tasks:
   default:
     cmds:
@@ -125,10 +129,10 @@ tasks:
     cmds:
       - cmd: sudo systemctl stop k3s.service
       - cmd: sudo systemctl start k3s.service
-      - task: install:crds
-      - task: install:argo-cd
-      - task: install:prometheus
-      - task: install:backstage
+      - cmd: |
+          sudo /usr/local/bin/k3s server \
+          --disable traefik \
+          --disable servicelb
 
   run:load-test:
     desc: Run load test
@@ -168,7 +172,7 @@ tasks:
     summary: >
       Traefik as it conflicts with the LoadBalancer service controller
     cmds:
-      - cmd: curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='server --disable=traefik' sh -s - 
+      - cmd: curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='server --disable=traefik' sh -s -
 
   install:minikube:
     desc: Install Minikube
@@ -180,8 +184,32 @@ tasks:
       - cmd: .bin/minikube config set driver docker
       - cmd: .bin/minikube start
 
+  deploy:metallb:
+    desc: Deploy Metallb loadbalancer service manager
+    vars:
+      IP_ADDRESS:
+        sh: ip route get '8.8.8.8' | grep -oP 'src \K[^ ]+'
+    cmds:
+      - cmd: helm repo add metallb https://metallb.github.io/metallb
+      - cmd: helm repo update
+      - cmd: |
+          helm upgrade --install metallb \
+          --namespace metallb-system --create-namespace \
+          --wait \
+          metallb/metallb
+      - cmd: |
+          cat <<EOF | kubectl apply -f -
+          apiVersion: metallb.io/v1beta1
+          kind: IPAddressPool
+          metadata:
+            name: default-pool
+            namespace: metallb-system
+          spec:
+            addresses:
+            - {{.IP_ADDRESS}}/32
+          EOF
 
-  install:crds:
+  deploy:crds:
     desc: Install required
     vars:
       PROMETHEUS_CRDS_VERSION: 2.0.0
@@ -194,7 +222,7 @@ tasks:
           prometheus-operator-crds \
           prometheus-community/prometheus-operator-crds
 
-  install:argo-cd:
+  deploy:argocd:
     desc: Install ArgoCD
     vars:
       ARGO_CD_VERSION: latest
@@ -218,6 +246,8 @@ tasks:
           --set server.extraArgs[0]="--insecure" \
           --set server.service.type="LoadBalancer" \
           --set server.service.servicePortHttp="32080" \
+          --set server.service.servicePortHttps="32443" \
+          --set server.service.annotations."metallb\.universe\.tf/allow-shared-ip"="edge-endpoint" \
           --set configs.params.server.insecure="true" \
           --set controller.metrics.enabled="true" \
           --set controller.metrics.serviceMonitor.enabled="true" \
@@ -254,18 +284,18 @@ tasks:
           --type='json' \
           --patch '[{"op": "add", "path": "/data/policy.csv", "value": "g, sysops, role:admin\ng, backstage, role:readonly\n"}]'
 
-  install:prometheus:
+  deploy:prometheus:
     desc: Install Prometheus
     cmds:
-      - task: install:crds
+      - task: deploy:crds
       - cmd: .bin/argocd app create kube-prometheus -f deploy/argocd/kube-prometheus.yaml --upsert
 
-  install:app:
+  deploy:app:
     desc: Install FastAPI demo app
     cmds:
       - cmd: .bin/argocd app create demo -f deploy/argocd/fastapi-demo.yaml --upsert
 
-  install:backstage:
+  deploy:backstage:
     desc: Install Backstage app
     cmds:
       - cmd: .bin/argocd app create backstage -f deploy/argocd/backstage.yaml --upsert
@@ -276,7 +306,7 @@ tasks:
       - cmd: kubectl apply -f deploy/manifests/backstage-rule.yml
       - cmd: kubectl apply -f deploy/manifests/backstage-rbac.yaml
 
-  install:secrets:
+  deploy:secrets:
     desc: Install secrets
     vars:
       BACKSTAGE_PREFIX: backstage
