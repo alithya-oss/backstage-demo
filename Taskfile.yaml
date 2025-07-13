@@ -8,8 +8,9 @@ vars:
   GREETING: Hello, World!
 
 includes:
-  istio: https://raw.githubusercontent.com/fjudith/tasks/main/istio-ica/Taskfile.yaml
-
+  istio: https://github.com/fjudith/tasks.git//istio/Taskfile.yaml?ref=main
+  lfs245: https://github.com/fjudith/tasks.git//istio-lfs245/Taskfile.yaml?ref=main
+  metallb: https://github.com/fjudith/tasks.git//metallb/Taskfile.yaml?ref=main
 
 tasks:
   default:
@@ -128,7 +129,6 @@ tasks:
     desc: Run Backstage inside Kubernetes
     cmds:
       - cmd: sudo systemctl stop k3s.service
-      - cmd: sudo systemctl start k3s.service
       - cmd: |
           sudo /usr/local/bin/k3s server \
           --disable traefik \
@@ -171,8 +171,13 @@ tasks:
     desc: Install K3S
     summary: >
       Traefik as it conflicts with the LoadBalancer service controller
+    vars:
+      K3S_ARGS:
+        - --disable=traefik
+        - --disable=serviceldb
     cmds:
-      - cmd: curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='server --disable=traefik' sh -s -
+      - cmd: curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='server {{ .K3S_ARGS | join " " }}' sh -s -
+      - task: metallb:deploy:localhost
 
   install:minikube:
     desc: Install Minikube
@@ -183,31 +188,6 @@ tasks:
       - cmd: chmod +x .bin/minikube
       - cmd: .bin/minikube config set driver docker
       - cmd: .bin/minikube start
-
-  deploy:metallb:
-    desc: Deploy Metallb loadbalancer service manager
-    vars:
-      IP_ADDRESS:
-        sh: ip route get '8.8.8.8' | grep -oP 'src \K[^ ]+'
-    cmds:
-      - cmd: helm repo add metallb https://metallb.github.io/metallb
-      - cmd: helm repo update
-      - cmd: |
-          helm upgrade --install metallb \
-          --namespace metallb-system --create-namespace \
-          --wait \
-          metallb/metallb
-      - cmd: |
-          cat <<EOF | kubectl apply -f -
-          apiVersion: metallb.io/v1beta1
-          kind: IPAddressPool
-          metadata:
-            name: default-pool
-            namespace: metallb-system
-          spec:
-            addresses:
-            - {{.IP_ADDRESS}}/32
-          EOF
 
   deploy:crds:
     desc: Install required
@@ -328,7 +308,6 @@ tasks:
 
   release:github:
     desc: Manually trigger Github release
-    summary:
     vars:
       VERSION:
         sh: yq -r '.version' package.json
