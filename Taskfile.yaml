@@ -227,7 +227,7 @@ tasks:
           --set server.service.type="LoadBalancer" \
           --set server.service.servicePortHttp="32080" \
           --set server.service.servicePortHttps="32443" \
-          --set server.service.annotations."metallb\.universe\.tf/allow-shared-ip"="edge-endpoint" \
+          --set server.service.annotations."metallb\.io/allow-shared-ip"="edge-endpoint" \
           --set configs.params.server.insecure="true" \
           --set controller.metrics.enabled="true" \
           --set controller.metrics.serviceMonitor.enabled="true" \

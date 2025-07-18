@@ -37,7 +37,7 @@ spec:
           ports:
             backend: 7007
           annotations:
-            metallb.universe.tf/allow-shared-ip: edge-endpoint
+            metallb.io/allow-shared-ip: edge-endpoint
           extraPorts:
             - name: http-prom
               port: 9464
