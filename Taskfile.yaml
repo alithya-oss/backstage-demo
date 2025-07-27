@@ -189,6 +189,41 @@ tasks:
       - cmd: .bin/minikube config set driver docker
       - cmd: .bin/minikube start
 
+  install:kind:
+    desc: Install Kubernetes in Docker (KinD)
+    vars:
+      VERSION: 0.29.0
+    cmds:
+      - mkdir -p ./bin
+      - >
+        [ $(uname -m) = x86_64 ] && curl -Lo $HOME/.local/bin/kind
+        https://kind.sigs.k8s.io/dl/v{{.VERSION}}/kind-linux-amd64
+      - chmod +x $HOME/.local/bin/kind
+      - |
+        cat <<EOF | tee .bin/kind-config.yaml
+        kind: Cluster
+        apiVersion: kind.x-k8s.io/v1alpha4
+        nodes:
+          - role: control-plane
+          - role: worker
+          - role: worker
+        networking:
+          disableDefaultCNI: true
+        EOF
+      - kind create cluster --config=.bin/kind-config.yaml
+      - task: install:cilium
+    generates:
+      - .bin/kind-config.yaml
+
+  install:cilium:
+    cmds:
+      - cat <<EOF | sudo tee /etc/sysctl.d/10-kind.conf
+        fs.inotify.max_user_watches = 524288
+        fs.inotify.max_user_instances = 512
+        EOF
+      - sudo sysctl -p
+      - cilium install --helm-set=securityContext.privileged=true
+
   deploy:crds:
     desc: Install required
     vars:
