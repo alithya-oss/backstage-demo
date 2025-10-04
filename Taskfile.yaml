@@ -102,13 +102,14 @@ tasks:
       SCOPES:
         - alithya-oss
         - backstage-community
+        - electrolux-oss
         - opentelemetry
         - roadiehq
     dir: ./
     cmds:
       - cmd: yarn install --immutable
       - cmd: yarn backstage-cli versions:bump --pattern '{{ .SCOPES | join "," | printf "@{%s}/*" }}'
-      # - task: ci:check
+      # - task: ci:verify
       - cmd: git add .
       - cmd: git commit -a -m "Bump community plugins and dependencies"
 
