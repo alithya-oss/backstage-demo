@@ -30,4 +30,4 @@ remote_write:
       max_samples_per_send: 10000
     basic_auth:
       username: root@example.com
-      password: ZpxR3iytoPPauzZv
+      password: jdVLFufREDB2F4H4

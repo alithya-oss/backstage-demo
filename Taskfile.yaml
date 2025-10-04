@@ -122,6 +122,10 @@ tasks:
           ./
   run:
     desc: Run Backstage application in development mode
+    env:
+      OTEL_SERVICE_NAME: backstage-backend
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://localhost:35080/api/default
+      OTEL_EXPORTER_OTLP_HEADERS: "Authorization=Basic cm9vdEBleGFtcGxlLmNvbTpqZFZMRnVmUkVEQjJGNEg0"
     cmds:
       - cmd: yarn install --immutable
       - cmd: LOG_LEVEL=debug yarn start
