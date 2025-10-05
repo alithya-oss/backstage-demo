@@ -25,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 0,
   "links": [],
   "panels": [
     {
@@ -35,216 +35,6 @@
         "w": 24,
         "x": 0,
         "y": 0
-      },
-      "id": 17,
-      "panels": [],
-      "title": "Network",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 0.0995
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 1
-      },
-      "id": 18,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "(sum(count_over_time((http_server_duration_count{namespace=\"$namespace\",service=\"backstage\",http_status_code=~\"(5..|429)\"})[5m:])) OR on() vector(0))\r\n/\r\n(sum(count_over_time((http_server_duration_count{namespace=\"$namespace\",service=\"backstage\"})[5m:])))",
-          "legendFormat": "errors",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Server request availability",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 0.995
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 1
-      },
-      "id": 19,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "(sum(count_over_time((http_client_duration_count{namespace=\"$namespace\",service=\"backstage\",http_status_code=~\"(5..|4..)\"})[5m:])) OR on() vector(0))\r\n/\r\n(sum(count_over_time((http_client_duration_count{namespace=\"$namespace\",service=\"backstage\"})[5m:])))",
-          "format": "time_series",
-          "legendFormat": "errors",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Client Requests Availability",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 9
       },
       "id": 5,
       "panels": [],
@@ -256,6 +46,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
+      "description": "Displays the highest number of Backstage catalog entities grouped by their kind (e.g., Component, API, Resource) within the selected namespace. This helps monitor the scale and composition of entities managed in Backstage.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -282,7 +73,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 1
       },
       "id": 1,
       "options": {
@@ -296,7 +87,7 @@
         "maxVizHeight": 300,
         "minVizHeight": 16,
         "minVizWidth": 8,
-        "namePlacement": "left",
+        "namePlacement": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -327,7 +118,7 @@
           "useBackend": false
         }
       ],
-      "title": "Catalog Entities Count",
+      "title": "Catalog Entities",
       "type": "bargauge"
     },
     {
@@ -335,6 +126,7 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
+      "description": "Displays the average delay (in seconds) experienced by the Backstage catalog processing queue over the last minute, within the selected namespace. This metric helps identify performance bottlenecks or latency issues in entity ingestion and updates.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -395,7 +187,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 17
+        "y": 8
       },
       "id": 3,
       "options": {
@@ -434,6 +226,7 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
+      "description": "Displays the maximum average time (in seconds) taken to process catalog entities in Backstage, grouped by result type (e.g., success, error), over the past minute within the selected namespace. This helps monitor processing performance and identify potential issues affecting ingestion outcomes.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -494,7 +287,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 17
+        "y": 8
       },
       "id": 2,
       "options": {
@@ -533,6 +326,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
+      "description": "Displays the per-second rate of catalog entities processed in Backstage over the last 5 minutes, grouped by result type (e.g., success, failure), within the selected namespace. This metric helps monitor processing throughput and detect anomalies in ingestion outcomes.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -618,7 +412,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 17
+        "y": 8
       },
       "id": 4,
       "options": {
@@ -657,6 +451,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
+      "description": "Displays the maximum number of entities waiting in the Backstage catalog stitching queue, grouped by pod, within the selected namespace. This metric helps identify potential bottlenecks or uneven workload distribution across pods in the catalog processing pipeline.\n\n_Stitching describes the process of merging and resolving entity relationships after they’ve been ingested into the catalog._",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -717,7 +512,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 25
+        "y": 16
       },
       "id": 8,
       "options": {
@@ -756,6 +551,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
+      "description": "Shows the per-second rate of stitched catalog entities in Backstage over the last 5 minutes, grouped by namespace and result type (e.g., success, failure). This metric helps monitor stitching throughput and identify issues across different namespaces.\n\n_Stitching describes the process of merging and resolving entity relationships after they’ve been ingested into the catalog._",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -841,7 +637,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 25
+        "y": 16
       },
       "id": 7,
       "options": {
@@ -865,9 +661,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(irate(catalog_stitched_entities_count_total{namespace=\"$namespace\"}[5m])) by(namespace, result)",
+          "expr": "sum(irate(catalog_stitched_entities_count_total{namespace=\"$namespace\"}[5m])) by(result)",
           "instant": false,
-          "legendFormat": "{{namespace}}: {{result}}",
+          "legendFormat": "{{result}}",
           "range": true,
           "refId": "A"
         }
@@ -880,6 +676,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
+      "description": "Displays the maximum average time (in seconds) taken to stitch catalog entities in Backstage, grouped by result type (e.g., success, failure), over the past minute. This metric helps monitor stitching performance and detect anomalies or delays in catalog resolution.\n\n_Stitching describes the process of merging and resolving entity relationships after they’ve been ingested into the catalog._",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -940,7 +737,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 25
+        "y": 16
       },
       "id": 6,
       "options": {
@@ -964,7 +761,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max(rate(catalog_stitching_duration_sum{namespace=\"$namespace\"}[1m]) / rate(catalog_stitching_duration_count{namespace=\"$namespace\"}[1m])) by (namespace, result)",
+          "expr": "max(rate(catalog_stitching_duration_sum{namespace=\"$namespace\"}[1m]) / rate(catalog_stitching_duration_count{namespace=\"$namespace\"}[1m])) by (result)",
           "instant": false,
           "legendFormat": "{{result}}",
           "range": true,
@@ -975,122 +772,552 @@
       "type": "timeseries"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 24
       },
       "id": 12,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "Displays the elapsed time (in seconds) since the last execution of each catalog backend task in Backstage, grouped by pod and task ID, within the selected namespace. This metric helps identify stale or inactive tasks that may require attention or indicate scheduling issues.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 65
+          },
+          "id": 9,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "time() - (max(backend_tasks_task_runs_started{namespace=\"$namespace\"}) by (pod, taskId))",
+              "instant": false,
+              "legendFormat": "{{pod}}: {{taskId}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Backend Tasks Time Since Scheduler Task Start",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "Displays the most recent start time (as a Unix timestamp) for each catalog backend task in Backstage, grouped by task ID, within the selected namespace. This metric helps track task execution activity and identify tasks that may not be running as expected.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 65
+          },
+          "id": 11,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "max(backend_tasks_task_runs_started{namespace=\"$namespace\"}) by(taskId)",
+              "instant": false,
+              "legendFormat": "{{taskId}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Backend Tasks Runs Started",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "Displays the most recent completion timestamp (as a Unix timestamp) for each catalog backend task in Backstage, grouped by task ID, within the selected namespace. This metric helps monitor task execution activity and identify tasks that may not be completing as expected.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 65
+          },
+          "id": 10,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "max(backend_tasks_task_runs_completed{namespace=\"$namespace\"}) by(taskId)",
+              "instant": false,
+              "legendFormat": "{{taskId}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Backend Tasks Runs Completed",
+          "type": "timeseries"
+        }
+      ],
       "title": "Backend Tasks",
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
+      "collapsed": true,
       "gridPos": {
-        "h": 8,
-        "w": 8,
+        "h": 1,
+        "w": 24,
         "x": 0,
-        "y": 34
+        "y": 25
       },
-      "id": 9,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.2.0",
-      "targets": [
+      "id": 16,
+      "panels": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "editorMode": "code",
-          "expr": "time() - (max(backend_tasks_task_runs_started{namespace=\"$namespace\"}) by (pod, taskId))",
-          "instant": false,
-          "legendFormat": "{{pod}}: {{taskId}}",
-          "range": true,
-          "refId": "A"
+          "description": "Displays the maximum number of executed steps in Backstage scaffolder tasks, grouped by template and step name, within the selected namespace. This metric helps monitor usage patterns and identify which scaffolder templates and steps are most frequently run.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 66
+          },
+          "id": 13,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "max(scaffolder_step_count_total{namespace=\"$namespace\"}) by (template, step)",
+              "instant": false,
+              "legendFormat": "{{namespace}}/{{template}} - {{step}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Scaffolder Step Count",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "Displays the maximum number of completed scaffolder tasks in Backstage, grouped by template, within the selected namespace. This metric helps track usage trends of different templates and identify which ones are most frequently used for scaffolding operations.",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 66
+          },
+          "id": 15,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.2.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "max(scaffolder_task_count_total{namespace=\"$namespace\"}) by (template)",
+              "instant": false,
+              "legendFormat": "{{template}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Scaffolder Task Count",
+          "type": "timeseries"
         }
       ],
-      "title": "Backend Tasks Time Since Scheduler Task Start",
-      "type": "timeseries"
+      "title": "Scaffolder",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "id": 17,
+      "panels": [],
+      "title": "Service availability",
+      "type": "row"
     },
     {
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
       },
+      "description": "Displays the proportion of HTTP requests to the Backstage service that resulted in server errors (5xx) or rate limiting (429) over the last 5 minutes, within the selected namespace. This metric helps monitor the reliability and responsiveness of the Backstage backend.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1149,11 +1376,11 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 8,
-        "x": 8,
-        "y": 34
+        "w": 12,
+        "x": 0,
+        "y": 27
       },
-      "id": 11,
+      "id": 18,
       "options": {
         "legend": {
           "calcs": [],
@@ -1175,14 +1402,13 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max(backend_tasks_task_runs_started{namespace=\"$namespace\"}) by(taskId)",
-          "instant": false,
-          "legendFormat": "{{taskId}}",
+          "expr": "(sum(count_over_time((http_server_duration_count{namespace=\"$namespace\",service=\"backstage\",http_status_code=~\"(5..|429)\"})[5m:])) OR on() vector(0))\r\n/\r\n(sum(count_over_time((http_server_duration_count{namespace=\"$namespace\",service=\"backstage\"})[5m:])))",
+          "legendFormat": "errors",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Backend Tasks Runs Started",
+      "title": "Server request availability",
       "type": "timeseries"
     },
     {
@@ -1190,6 +1416,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
+      "description": "Displays the proportion of HTTP client requests made by the Backstage service that resulted in client or server errors (HTTP 4xx and 5xx) over the last 5 minutes, within the selected namespace. This metric helps monitor the reliability of outbound requests and detect issues with external service interactions.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1248,11 +1475,11 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 8,
-        "x": 16,
-        "y": 34
+        "w": 12,
+        "x": 12,
+        "y": 27
       },
-      "id": 10,
+      "id": 19,
       "options": {
         "legend": {
           "calcs": [],
@@ -1274,14 +1501,14 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max(backend_tasks_task_runs_completed{namespace=\"$namespace\"}) by(taskId)",
-          "instant": false,
-          "legendFormat": "{{taskId}}",
+          "expr": "(sum(count_over_time((http_client_duration_count{namespace=\"$namespace\",service=\"backstage\",http_status_code=~\"(5..|4..)\"})[5m:])) OR on() vector(0))\r\n/\r\n(sum(count_over_time((http_client_duration_count{namespace=\"$namespace\",service=\"backstage\"})[5m:])))",
+          "format": "time_series",
+          "legendFormat": "errors",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Backend Tasks Runs Completed",
+      "title": "Client Requests Availability",
       "type": "timeseries"
     },
     {
@@ -1290,18 +1517,19 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 35
       },
-      "id": 16,
+      "id": 20,
       "panels": [],
-      "title": "Scaffolder",
+      "title": "Database Operations",
       "type": "row"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "PBFA97CFB590B2093"
       },
+      "description": "Displays the maximum average duration (in seconds) of database client operations in Backstage over the past minute, grouped by result type (e.g., success, error), within the selected namespace. This metric helps monitor database performance and identify potential issues affecting query execution times.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1316,7 +1544,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 25,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -1356,15 +1584,40 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "seconds"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
-        "w": 8,
+        "w": 12,
         "x": 0,
-        "y": 43
+        "y": 36
       },
-      "id": 13,
+      "id": 21,
       "options": {
         "legend": {
           "calcs": [],
@@ -1381,26 +1634,22 @@
       "pluginVersion": "12.2.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
           "editorMode": "code",
-          "expr": "max(scaffolder_step_count_total{namespace=\"$namespace\"}) by (template, step)",
-          "instant": false,
-          "legendFormat": "{{namespace}}/{{template}} - {{step}}",
+          "expr": "max(rate(db_client_operation_duration_sum{namespace=\"$namespace\"}[1m]) / rate(db_client_operation_duration_count{namespace=\"$namespace\"}[1m])) by (result)",
+          "legendFormat": "seconds",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Scaffolder Step Count",
+      "title": "DB Operation Duration",
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "PBFA97CFB590B2093"
       },
+      "description": "Displays the maximum average duration (in seconds) of database client operations in Backstage over the past minute, grouped by result type (e.g., success, error) and operation name (e.g., query, insert, update), within the selected namespace. This metric helps monitor database performance and pinpoint slow or failing operations.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1459,11 +1708,11 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 8,
-        "x": 8,
-        "y": 43
+        "w": 12,
+        "x": 12,
+        "y": 36
       },
-      "id": 15,
+      "id": 22,
       "options": {
         "legend": {
           "calcs": [],
@@ -1480,19 +1729,14 @@
       "pluginVersion": "12.2.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
           "editorMode": "code",
-          "expr": "max(scaffolder_task_count_total{namespace=\"$namespace\"}) by (template)",
-          "instant": false,
-          "legendFormat": "{{template}}",
+          "expr": "max(rate(db_client_operation_duration_sum{namespace=\"$namespace\"}[1m]) / rate(db_client_operation_duration_count{namespace=\"$namespace\"}[1m])) by (result,db_operation_name)",
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Scaffolder Task Count",
+      "title": "DB Operation Duration by Operation",
       "type": "timeseries"
     }
   ],
@@ -1517,8 +1761,8 @@
       },
       {
         "current": {
-          "text": "backstage-dev",
-          "value": "backstage-dev"
+          "text": "backstage-prod",
+          "value": "backstage-prod"
         },
         "datasource": {
           "type": "prometheus",
@@ -1541,12 +1785,12 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Backstage OpenTelemetry by Namespace (Prometheus Operator)",
-  "uid": "adcjb5m",
-  "version": 32
+  "title": "Backstage / Telemetry / Namespace",
+  "uid": "adkxxsl",
+  "version": 28
 }
