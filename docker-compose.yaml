@@ -36,22 +36,6 @@ services:
   #     - '${OTLP_EXPORTER_PORT:-4317}:4317'
   #     - '${OTLP_EXPORTER_GRPC_PORT:-4318}:4318'
 
-  prometheus:
-    image: docker.io/prom/prometheus:latest
-    restart: always
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
-    ports:
-      - '${PROMETHEUS_PORT:-9090}:9090'
-    volumes:
-      - ./packages/backend/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./packages/backend/monitoring/backstage-rules.yml:/etc/prometheus/backstage-rules.yml
-
-  promlens:
-    image: docker.io/prom/promlens:latest
-    ports:
-      - '${PROMLENS_PORT:-8080}:8080'
-
   openobserve:
     image: public.ecr.aws/zinclabs/openobserve:latest
     restart: unless-stopped
@@ -62,6 +46,39 @@ services:
       - "35080:5080"
     volumes:
       - backstage-openobserve:/data
+
+  prometheus:
+    image: docker.io/prom/prometheus:latest
+    restart: always
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    ports:
+      - '${PROMETHEUS_PORT:-9090}:9090'
+    volumes:
+      - ./examples/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./examples/prometheus/backstage-rules.yml:/etc/prometheus/backstage-rules.yml
+    depends_on:
+      - openobserve
+
+  promlens:
+    image: docker.io/prom/promlens:latest
+    ports:
+      - '${PROMLENS_PORT:-8080}:8080'
+    depends_on:
+      - prometheus
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 43000:3000
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/etc/grafana/provisioning/dashboards/backstage.json
+    volumes:
+      - ./examples/grafana/dashboards:/etc/grafana/provisioning/dashboards/
+      - ./examples/grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+    depends_on:
+      - prometheus
 
 volumes:
   # backstage-postgres:

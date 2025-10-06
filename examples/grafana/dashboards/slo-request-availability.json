@@ -1334,7 +1334,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "PBFA97CFB590B2093"
+          "uid": "${datasource}"
         },
         "definition": "label_values(slo:objective:ratio{sloth_service=\"${service}\"}, sloth_slo)",
         "includeAll": true,
