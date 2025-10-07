@@ -151,26 +151,26 @@ tasks:
   generate:slo:
     desc: Generate Prometheus rules for Backstage app
     cmds:
-      - cmd: mkdir -p packages/backend/monitoring
+      - cmd: mkdir -p examples/prometheus
       - cmd: >
           curl -fsSL
-          -o 'packages/backend/monitoring/prometheus.yml'
+          -o 'examples/prometheus/prometheus.yml'
           https://raw.githubusercontent.com/backstage/backstage/refs/heads/master/packages/backend/prometheus.yml
       - cmd: >
           yq eval --inplace '
           .scrape_configs[0].job_name = "backstage" |
           .scrape_configs[1].job_name = "prometheus" |
           .scrape_configs[1].static_configs[0].targets[0] = "localhost:9090"
-          ' packages/backend/monitoring/prometheus.yml
+          ' examples/prometheus/prometheus.yml
       # - oslo validate -f deploy/monitoring/slo-spec.v1alpha.yml
       - cmd: >
           sloth generate
           -i deploy/monitoring/sloth-spec.v1.yml
-          -o packages/backend/monitoring/backstage-rules.yml
-      - promtool check rules packages/backend/monitoring/backstage-rules.yml
+          -o examples/prometheus/backstage-rules.yml
+      - promtool check rules examples/prometheus/backstage-rules.yml
       - cmd: >
           yq -i '.rule_files[0] = "backstage-rules.yml"
-          ' packages/backend/monitoring/prometheus.yml
+          ' examples/prometheus/prometheus.yml
 
   install:k3s:
     desc: Install K3S

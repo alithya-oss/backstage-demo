@@ -1,4 +1,53 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.2.0"
+    },
+    {
+      "type": "panel",
+      "id": "heatmap",
+      "name": "Heatmap",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -24,7 +73,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 0,
+  "id": null,
   "links": [],
   "panels": [
     {
@@ -148,7 +197,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "slo:current_burn_rate:ratio > ${min_burning_rate}",
@@ -288,7 +337,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "slo:current_burn_rate:ratio > ${min_burning_rate}",
@@ -371,7 +420,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -384,7 +433,6 @@
           "refId": "A"
         }
       ],
-      "title": "",
       "type": "stat"
     },
     {
@@ -512,7 +560,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "1 - (max(slo:sli_error:ratio_rate${sli_window}{sloth_service=\"${service}\", sloth_slo=\"${slo}\"}) OR on() vector(0))",
@@ -541,7 +589,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -606,13 +654,12 @@
           "refId": "A"
         }
       ],
-      "title": "",
       "type": "stat"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "This moment burning % of the budget.",
       "fieldConfig": {
@@ -685,13 +732,12 @@
           "refId": "A"
         }
       ],
-      "title": "",
       "type": "stat"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "This month remaining error budget, starts the 1st of the month and ends  28th-31st (not rolling window)",
       "fieldConfig": {
@@ -764,13 +810,12 @@
           "refId": "A"
         }
       ],
-      "title": "",
       "type": "stat"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "A rolling window of the total period (30d) error budget remaining.",
       "fieldConfig": {
@@ -843,13 +888,12 @@
           "refId": "A"
         }
       ],
-      "title": "",
       "type": "stat"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "This graph shows the month error budget burn down chart (starts the 1st until the end of the month)",
       "fieldConfig": {
@@ -990,7 +1034,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "1 - sum_over_time(\n  (\n    (1 / (days_in_month() * 24)) *\n    (month() == bool vector(${__to:date:M}))\n  )[32d:1h]\n)",
@@ -1076,7 +1120,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "slo:current_burn_rate:ratio{sloth_service=\"${service}\", sloth_slo=\"${slo}\"} > 0",
@@ -1170,7 +1214,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": false,
           "expr": "max(ALERTS{sloth_service=\"${service}\", sloth_slo=\"${slo}\", sloth_severity=\"ticket\"}) OR on() vector(0)",
@@ -1181,7 +1225,6 @@
           "refId": "A"
         }
       ],
-      "title": "",
       "type": "stat"
     },
     {
@@ -1263,7 +1306,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${datasource}"
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": false,
           "expr": "max(ALERTS{sloth_service=\"${service}\", sloth_slo=\"${slo}\", sloth_severity=\"page\"}) or on() vector(0)",
@@ -1274,11 +1317,9 @@
           "refId": "A"
         }
       ],
-      "title": "",
       "type": "stat"
     }
   ],
-  "preload": false,
   "refresh": "30s",
   "schemaVersion": 42,
   "tags": [
@@ -1290,10 +1331,7 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "Prometheus",
-          "value": "PBFA97CFB590B2093"
-        },
+        "current": {},
         "includeAll": false,
         "label": "datasource",
         "name": "datasource",
@@ -1304,10 +1342,7 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "text": "backstage",
-          "value": "backstage"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -1328,13 +1363,10 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${datasource}"
+          "uid": "${DS_PROMETHEUS}"
         },
         "definition": "label_values(slo:objective:ratio{sloth_service=\"${service}\"}, sloth_slo)",
         "includeAll": true,
@@ -1434,5 +1466,6 @@
   "timezone": "",
   "title": "SLO / Detail",
   "uid": "slo-detail",
-  "version": 18
+  "version": 19,
+  "weekStart": ""
 }
